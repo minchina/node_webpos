@@ -61,9 +61,8 @@ module.exports=function(app){
         }).savecount =
             Good.get_savecount(_.find(goods,function(good){return good.barcode == req.body.good_barcode}).count,req.body.good_barcode,req.session.promotion) || 0;
         req.session.item = goods;
+        var save_count = _.find(goods,function(good){return good.barcode == req.body.good_barcode}).savecount;
+        res.json({savecount:save_count,total:req.session.total});
 
-        res.writeHead(200,{'Content-type':'text/plain'});
-        res.write(req.session.total+'');
-        res.end();
     })
 };

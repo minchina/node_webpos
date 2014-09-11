@@ -1,0 +1,41 @@
+<% include header.ejs %>
+
+<div class="container">
+
+    <div class="panel panel-default">
+        <div class="panel-heading" style="text-align: center"><h4>商品列表</h4></div>
+        <span id="pay_date"></span>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>分类</th>
+                    <th>名称</th>
+                    <th>单价(元)</th>
+                    <th>单位</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody class="item-body">
+                <% goods.forEach(function(shop,index){ %>
+                <tr>
+                    <td><%= shop.type %></td>
+                    <td><%= shop.name %></td>
+                    <td><%= shop.price %></td>
+                    <td><%= shop.unit %></td>
+                    <td class="hidden item-barcode"><%= shop.barcode %></td>
+                    <td><a class="btn btn-primary addCart" type="button" href="#" onclick="addtocart('<%= shop.barcode%>')">加入购物车</a></td>
+                </tr>
+                <% })%>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function(){
+        $('#item_page').addClass('active');
+    });
+</script>
+<% include footer.ejs %>

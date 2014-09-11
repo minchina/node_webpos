@@ -1,0 +1,44 @@
+<% include header.ejs %>
+<div class="container">
+
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4>购物清单</h4></div>
+        <span id="pay_date"></span>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>分类</th>
+                    <th>名称</th>
+                    <th>单价(元)</th>
+                    <th>单位</th>
+                    <th>数量</th>
+                    <th>小计</th>
+                </tr>
+                </thead>
+                <tbody class="item-body">
+                <% goods.forEach(function(shop,index){ %>
+                <tr class="good_body">
+                    <td><%= shop.type %></td>
+                    <td><%= shop.name %></td>
+                    <td><%= shop.price %></td>
+                    <td><%= shop.unit %></td>
+                    <td class="hidden item-barcode"><%= shop.barcode %></td>
+                    <td><div class="btn-group"><button class="btn btn-default item-minus">-</button>
+                            <button class="btn btn-default item-count"  disabled="disabled"><%= shop.count%></button>
+                            <button class="btn btn-default item-add">+</button></div></td>
+                    <td><%= shop.count * shop.price %>元</td>
+                </tr>
+                <% })%>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="side-space text-right">
+            <p>总计：<span id="total"><%= total_price %>元</span></p>
+            <a class="btn btn-primary vertical-space" href="/payment">付款</a>
+        </div>
+    </div>
+</div>
+
+<% include footer.ejs %>

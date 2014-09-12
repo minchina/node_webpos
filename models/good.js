@@ -25,6 +25,16 @@ Good.get_no_null_messages=function(messages){
 
 };
 
+Good.get_gift=function(buy_goods){
+    return _.filter(buy_goods,function(good){return good.savecount !=0});
+
+};
+
+Good.get_total_price = function(goods){
+    var price =0;
+    _.each(goods,function(good){price+=good.price*(good.count-good.savecount)});
+    return price;
+};
 
 Good.get_all_goods = function(callback){
     //打开数据库

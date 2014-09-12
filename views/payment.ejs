@@ -1,3 +1,70 @@
 <% include header.ejs %>
+<div class="container">
+
+    <div class="panel panel-default">
+        <div class="panel-heading"><h4>购物清单</h4></div>
+        <span id="pay_date"></span>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>分类</th>
+                    <th>名称</th>
+                    <th>单价(元)</th>
+                    <th>单位</th>
+                    <th>数量</th>
+                    <th>小计</th>
+                </tr>
+                </thead>
+                <tbody class="item-body">
+                <% goods.forEach(function(shop,index){ %>
+                <tr class="good_body">
+                    <td><%= shop.type %></td>
+                    <td><%= shop.name %></td>
+                    <td class="item-price"><%= shop.price %></td>
+                    <td><%= shop.unit %></td>
+                    <td class="hidden item-savecount"><%= shop.savecount %></td>
+                    <td class="hidden item-barcode"><%= shop.barcode %></td>
+                    <td><%= shop.count%></td>
+                    <%if(!shop.savecount){%>
+                    <td class="item-single-price"><%= (shop.price * shop.count).toFixed(2)%>元</td>
+                    <%}else {%>
+                    <td class="item-single-price"><%= (shop.price * (shop.count-shop.savecount)).toFixed(2)%>元(原价:<%=(shop.price * shop.count).toFixed(2)%>元)</td>
+                    <%}%>
+                </tr>
+                <% })%>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel-heading"><h4>赠送商品</h4></div>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>分类</th>
+                    <th>名称</th>
+                    <th>数量</th>
+                </tr>
+                </thead>
+                <tbody class="gift-body">
+                <% gift_goods.forEach(function(shop,index){ %>
+                <tr class="good_body">
+                    <td><%= shop.type %></td>
+                    <td><%= shop.name %></td>
+                    <td class="item-price"><%= shop.savecount %></td>
+                <% })%>
+                </tbody>
+
+            </table>
+        </div>
+
+        <div class="side-space text-right">
+            <p>总计：<span id="total_price"><%= total_price %>元</span></p>
+            <p>节约：<span id="gift_prices"><%= save_price%>元</span></p>
+            <a class="btn btn-primary vertical-space" id="confirm" href="/item">确认</a>
+        </div>
+    </div>
+</div>
 
 <% include footer.ejs %>

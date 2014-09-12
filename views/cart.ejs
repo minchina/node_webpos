@@ -28,7 +28,12 @@
                     <td><div class="btn-group"><button class="btn btn-default item-minus">-</button>
                             <button class="btn btn-default item-count"  disabled="disabled"><%= shop.count%></button>
                             <button class="btn btn-default item-add">+</button></div></td>
-                    <td class="item-single-price"><%= shop.count * shop.price %>元</td>
+
+                    <%if(!shop.savecount){%>
+                        <td class="item-single-price"><%= (shop.price * shop.count).toFixed(2)%>元</td>
+                    <%}else {%>
+                    <td class="item-single-price"><%= (shop.price * (shop.count-shop.savecount)).toFixed(2)%>元(原价:<%=(shop.price * shop.count).toFixed(2)%>元)</td>
+                    <%}%>
                 </tr>
                 <% })%>
                 </tbody>
@@ -36,7 +41,7 @@
         </div>
 
         <div class="side-space text-right">
-            <p>总计：<span id="total"><%= total_price %>元</span></p>
+            <p>总计：<span id="total_price"><%= total_price %>元</span></p>
             <a class="btn btn-primary vertical-space" href="/payment">付款</a>
         </div>
     </div>

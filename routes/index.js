@@ -5,12 +5,10 @@ var _ = require('underscore');
  */
 module.exports=function(app){
     app.get('/',function(req,res){
-        req.session.total =0;
        if(!req.session.total){
            req.session.total =0;
        }
         Good.get_promotions(function(err,promotions){
-            req.session.promotion = promotions;
             if(err){
                 return callback(err);
             }
@@ -23,7 +21,6 @@ module.exports=function(app){
 
     app.get('/item',function(req,res){
         Good.get_all_goods(function(err,goods){
-            req.session.item=goods;
             if(!req.session.item){
                 req.session.item=goods;
             }
@@ -49,10 +46,17 @@ module.exports=function(app){
 
         res.render('payment',{title:"购物车",
             gift_goods:Good.get_gift(req.session.item),
-            save_price:12,
+            save_price:Good.get_gift_price(req.session.item),
             cart_total:req.session.total,
             total_price:req.session.total_price || 0,
             goods:goods})
+    });
+
+    app.get('/confirm',function(req,res){
+        req.session.item=null;
+        req.session.total=0;
+        req.session.total_price=0;
+        res.redirect('/item');
     });
 
     app.post('/addcart',function(req,res){

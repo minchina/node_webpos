@@ -5,6 +5,12 @@ function addtocart(good_barcode){
     })
 }
 
+$("#confirm").on('click',function(){
+    $.get('/confirm',function(){
+
+    })
+});
+
 $('.item-add').on('click',function(){
     var THIS = this;
     var good_barcode = $(this).closest('.good_body').find('.item-barcode').text();

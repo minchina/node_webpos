@@ -30,6 +30,12 @@ Good.get_gift=function(buy_goods){
 
 };
 
+Good.get_gift_price =function(goods){
+    var price =0;
+    _.each(goods,function(good){price+=good.price*(good.savecount)});
+    return price;
+};
+
 Good.get_total_price = function(goods){
     var price =0;
     _.each(goods,function(good){price+=good.price*(good.count-good.savecount)});

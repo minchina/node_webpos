@@ -70,6 +70,7 @@ module.exports=function(app){
             _.find(goods,function(good){return good.barcode == req.body.good_barcode}).count--;
             req.session.total -= 1;
         }
+
         _.find(goods,function(good){
             return good.barcode == req.body.good_barcode
         }).savecount =
@@ -81,4 +82,8 @@ module.exports=function(app){
         res.json({savecount:save_count,total:req.session.total,total_price:total_price});
 
     })
+
+    app.get('/admin',function(req,res){
+       res.render('admin',{title:"pos机后台管理系统",cart_total:req.session.total});
+    });
 };

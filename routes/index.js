@@ -81,9 +81,15 @@ module.exports=function(app){
         req.session.total_price = total_price;
         res.json({savecount:save_count,total:req.session.total,total_price:total_price});
 
-    })
+    });
 
     app.get('/admin',function(req,res){
-       res.render('admin',{title:"pos机后台管理系统",cart_total:req.session.total});
+
+        Good.get_all_goods(function(err,goods){
+            if(err){
+                return callback(err);
+            }
+            res.render('admin',{title:"pos机后台管理系统",cart_total:req.session.total,goods:goods});
+        })
     });
 };

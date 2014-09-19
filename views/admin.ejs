@@ -4,7 +4,7 @@
 <div class="panel panel-default">
     <div class="panel-heading"><h3>POS后台管理系统</h3></div>
         <div class="panel-body">
-            <div style="border: 1px solid lightgray;width: 20%;height: 500px; background: #999999;float:left;">
+            <div style="border: 1px solid #a9a9a9;width: 20%;height: 500px; background: #a9a9a9;float:left;">
                 <a href="#" style="color: #000000;"><div style="border: 1px solid #c0c0c0;width: 100%;height: 40px;"><h4 style="text-align: center">商品管理</h4></div></a>
                 <a href="#" style="color: #000000;"><div style="border: 1px solid #c0c0c0;width: 100%;height: 40px;"><h4 style="text-align: center">折扣活动</h4></div></a>
             </div>
@@ -13,7 +13,34 @@
                     <span><h3>商品信息管理</h3></span>
                     <button type="button" class="btn btn-primary">添加商品</button>
                     <div class="panel-body">
-                        Panel content
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>商品名称</th>
+                                <th>商品数量</th>
+                                <th>单价(元)</th>
+                                <th>单位</th>
+                                <th>发布时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>苹果</td>
+                                <td><div class="btn-group"><button class="btn btn-default item-minus">-</button>
+                                        <button class="btn btn-default item-count" style="background: #a9a9a9" disabled="disabled"><span>123</span></button>
+                                        <button class="btn btn-default item-add">+</button></div></td>
+                                <td>3</td>
+                                <td>斤</td>
+                                <td>time</td>
+                                <td><a href="#">详情</a>
+                                    <a href="#">删除</a>
+                                    </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

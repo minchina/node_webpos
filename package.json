@@ -6,11 +6,11 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "3.16.8",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "*",
     "ejs": "*",
-    "mongodb":"*",
-    "connect-flash": "*",
-    "connect-mongo":"*",
-    "underscore":"*"
+    "express": "3.16.8",
+    "mongodb": "*",
+    "underscore": "*"
   }
 }

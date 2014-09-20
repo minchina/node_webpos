@@ -1,5 +1,6 @@
 var Good = require('../models/good');
 var _ = require('underscore');
+var flash  = require('connect-flash');
 /*
  * GET home page.
  */
@@ -98,12 +99,22 @@ module.exports=function(app){
 
     });
 
+    app.get('/after',function(req,res){
+        res.render('adminpage/addgood',{title:"pos机后台管理系统"});
 
+    });
 
-
-
-
-
+    app.post('/addgood',function(req,res){
+        var goodName = req.body.good_name;
+        var goodCount = req.body.good_count;
+        var goodUnit = req.body.good_unit;
+        var goodPrice =req.body.good_price;
+        if (!_.where(req.session.item,{name:goodName})){
+            return false;
+        }
+        var newGood = new Good(goodName,goodCount,goodPrice,goodUnit);
+        newGood.save();
+    })
 
 
 };

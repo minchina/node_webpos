@@ -1,18 +1,45 @@
 var mongodb = require('./db');
 var _ = require('underscore');
 
-function Good(good){
-    this.barcode = good.barcode;
-    this.name = good.name;
-    this.type = good.type;
-    this.unit = good.unit;
-    this.price = good.price;
-    this.count = good.count;
-    this.savecount = good.savecount;
+function Good(name,count,price,unit,barcode,type,savecount){
+    this.barcode =barcode || null;
+    this.name = name ;
+    this.type = type || null;
+    this.unit = unit;
+    this.price = price || 0;
+    this.count = count || 0;
+    this.savecount = savecount || 0;
 }
 
 module.exports = Good;
 
+
+
+Good.prototype.save=function(callback){
+
+    var new_good = this;
+    console.log(new_good);
+    mongodb.open(function(err,db){
+        if(err){
+            return callback(err);
+        }
+        db.collection('goods',function(err,collection){
+            if(err){
+                mongodb.close();
+                return callback(err);
+            }
+            collection.insert(new_good,{safe:true},function(err,new_good){
+                mongodb.close();
+                if(err){
+                    return callback(err);
+                }
+                callback(null,new_good[0]);
+            });
+
+        });
+    });
+
+};
 
 Good.get_savecount = function(count,barcode,barcodes){
     if(_.find(barcodes,function(message){return message.barcode == barcode})){

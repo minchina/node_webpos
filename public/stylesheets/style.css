@@ -6,7 +6,13 @@
     background: lightgrey;
 }
 
-.left_item {
-    margin-top: 0;
-    margin-left: 0;
+.add_page_button {
+    border: 1px solid #000000;
+    width: 25%;
+    height: 140px;
+    float: left;
+}
+
+.btn_fixed_add {
+    text-align: center;
 }

@@ -1,0 +1,70 @@
+<% include adminheader.ejs%>
+
+<div class="panel panel-default">
+    <div class="panel-heading"><h3>POS后台管理系统</h3></div>
+    <div class="panel-body">
+        <div style="border: 1px solid #a9a9a9;width: 20%;height: 500px; background: #a9a9a9;float:left;">
+            <a href="/admin " style="color: #000000;"><div style="border: 1px solid #c0c0c0;width: 100%;height: 40px;"><h4 style="text-align: center">商品管理</h4></div></a>
+            <a href="#" style="color: #000000;"><div style="border: 1px solid #c0c0c0;width: 100%;height: 40px;"><h4 style="text-align: center">折扣活动</h4></div></a>
+        </div>
+        <div style="float: right;height: 500px;width: 80%;border: 1px solid #808080">
+                <div class="col-md-12 btnBar" style="padding-top: 30px;padding-left: 50px;">
+                    <div class="row">
+                        <div class="col-xs-3 col-md-3"><button type="submit" class="btn btn-default">保存商品</button></div>
+                        <div class="col-xs-3 col-md-3"><a href="/addShopAttr" class="btn btn-default">添加属性</a></div>
+                        <div class="col-xs-3 col-md-3"><a href="#" class="btn btn-default">删除属性</a></div>
+                        <div class="col-xs-3 col-md-3"><button type="reset" class="btn btn-default">取消</button></div>
+                    </div>
+
+                    <div class="row show-grid" style="margin-top: 60px;">
+                        <div class="col-md-4 col-md-offset-1">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-4 control-label">商品名称：</label>
+                                <div class="col-sm-6">
+                                    <input type="email" class="form-control" id="inputEmail3" placeholder="请输入商品名称">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-4 control-label">商品数量：</label>
+                                <div class="col-sm-6">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default">-</button>
+                                        <button type="button" class="btn btn-default">2</button>
+                                        <button type="button" class="btn btn-default">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row show-grid" style="margin-top: 30px;">
+                        <div class="col-md-4 col-md-offset-1">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-4 control-label">单价(元)：</label>
+                                <div class="col-sm-6">
+                                    <input type="email" class="form-control" id="inputEmail3" placeholder="请输入单价">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-4 control-label">单位：</label>
+                                <div class="col-sm-6">
+                                    <input type="email" class="form-control" id="inputEmail3" placeholder="请输入单位">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+        </div>
+</div>
+
+
+
+
+<% include adminfooter.ejs%>

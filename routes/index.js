@@ -89,7 +89,21 @@ module.exports=function(app){
             if(err){
                 return callback(err);
             }
-            res.render('admin',{title:"pos机后台管理系统",cart_total:req.session.total,goods:goods});
+            res.render('adminpage/admin',{title:"pos机后台管理系统",cart_total:req.session.total,goods:goods});
         })
     });
+
+    app.get('/addgood',function(req,res){
+        res.render('adminpage/addgood',{title:"pos机后台管理系统"});
+
+    });
+
+
+
+
+
+
+
+
+
 };

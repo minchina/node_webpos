@@ -1,7 +1,6 @@
 function addtocart(good_barcode){
     $.post('/addcart',{good_barcode:good_barcode,type:"add"},function(data){
         $('#cart').text(data.total);
-        console.log(data.total);
     })
 }
 

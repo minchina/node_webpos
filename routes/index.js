@@ -56,6 +56,7 @@ module.exports=function(app){
         req.session.item=null;
         req.session.total=0;
         req.session.total_price=0;
+        req.session.promotion=null;
         res.redirect('/item');
     });
 
@@ -63,20 +64,20 @@ module.exports=function(app){
         var goods = req.session.item;
         var type = req.body.type;
         if(type=="add"){
-            _.find(goods,function(good){return good.barcode == req.body.good_barcode}).count++;
+            _.find(goods,function(good){return good.name == req.body.good_name}).count++;
             req.session.total += 1;
         }
         if(type=="minus"){
-            _.find(goods,function(good){return good.barcode == req.body.good_barcode}).count--;
+            _.find(goods,function(good){return good.name == req.body.good_name}).count--;
             req.session.total -= 1;
         }
 
         _.find(goods,function(good){
-            return good.barcode == req.body.good_barcode
+            return good.name == req.body.good_name
         }).savecount =
-            Good.get_savecount(_.find(goods,function(good){return good.barcode == req.body.good_barcode}).count,req.body.good_barcode,req.session.promotion) || 0;
+            Good.get_savecount(_.find(goods,function(good){return good.name == req.body.good_name}).count,req.body.good_name,req.session.promotion) || 0;
         req.session.item = goods;
-        var save_count = _.find(goods,function(good){return good.barcode == req.body.good_barcode}).savecount;
+        var save_count = _.find(goods,function(good){return good.name == req.body.good_name}).savecount;
         var total_price = Good.get_total_price(req.session.item);
         req.session.total_price = total_price;
         res.json({savecount:save_count,total:req.session.total,total_price:total_price});

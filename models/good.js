@@ -41,7 +41,6 @@ Good.prototype.save=function(callback){
 };
 
 Good.delete_good=function(good_name,callback){
-    console.log(good_name);
     mongodb.open(function(err,db){
         if(err){
             return callback(err);
@@ -116,8 +115,11 @@ Good.get_promotions = function(callback){
     });
 };
 
-Good.get_savecount = function(count,barcode,barcodes){
-    if(_.find(barcodes,function(message){return message.barcode == barcode})){
+Good.get_savecount = function(count,name,barcodes){
+    console.log(name);
+    console.log(barcodes);
+    if(_.find(barcodes,function(message){return message.name == name})){
+        console.log(Math.floor(count/3));
         return Math.floor(count/3);
     }
 };

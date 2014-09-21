@@ -1,5 +1,6 @@
-function addtocart(good_barcode){
-    $.post('/addcart',{good_barcode:good_barcode,type:"add"},function(data){
+
+function addtocart(good_name){
+    $.post('/addcart',{good_name:good_name,type:"add"},function(data){
         $('#cart').text(data.total);
     })
 }
@@ -12,11 +13,11 @@ $("#confirm").on('click',function(){
 
 $('.item-add').on('click',function(){
     var THIS = this;
-    var good_barcode = $(this).closest('.good_body').find('.item-barcode').text();
+    var good_name = $(this).closest('.good_body').find('.item_name').text();
     var item_count = $(this).closest('.good_body').find('.item-count');
     item_count.text(parseInt(item_count.text())+1);
     var price = $(this).closest('.good_body').find('.item-price').text();
-    $.post('/addcart',{good_barcode:good_barcode,type:"add"},function(data){
+    $.post('/addcart',{good_name:good_name,type:"add"},function(data){
         $('#cart').text(data.total);
         $('#total_price').text(data.total_price.toFixed(2)+'元');
         $(THIS).closest('.good_body').find('.item-single-price').text(get_single_price(parseInt(price),parseInt(item_count.text()),data.savecount));
@@ -26,14 +27,14 @@ $('.item-add').on('click',function(){
 
 $('.item-minus').on('click',function(){
     var THIS = this;
-    var good_barcode = $(this).closest('.good_body').find('.item-barcode').text();
+    var good_name = $(this).closest('.good_body').find('.item_name').text();
     var item_count = $(this).closest('.good_body').find('.item-count');
     if(parseInt(item_count.text())==0){
         return ;
     }
     item_count.text(parseInt(item_count.text())-1);
     var price = $(this).closest('.good_body').find('.item-price').text();
-    $.post('/addcart',{good_barcode:good_barcode,type:"minus"},function(data){
+    $.post('/addcart',{good_name:good_name,type:"minus"},function(data){
         $('#cart').text(data.total);
         $('#total_price').text(data.total_price.toFixed(2)+'元');
         $(THIS).closest('.good_body').find('.item-single-price').text(get_single_price(parseInt(price),parseInt(item_count.text()),data.savecount));

@@ -18,7 +18,6 @@ module.exports = Good;
 Good.prototype.save=function(callback){
 
     var new_good = this;
-    console.log(new_good);
     mongodb.open(function(err,db){
         if(err){
             return callback(err);

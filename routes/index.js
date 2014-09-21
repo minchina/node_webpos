@@ -1,6 +1,5 @@
 var Good = require('../models/good');
 var _ = require('underscore');
-var flash  = require('connect-flash');
 /*
  * GET home page.
  */
@@ -95,12 +94,8 @@ module.exports=function(app){
     });
 
     app.get('/addgood',function(req,res){
-        res.render('adminpage/addgood',{title:"pos机后台管理系统"});
-
-    });
-
-    app.get('/after',function(req,res){
-        res.render('adminpage/addgood',{title:"pos机后台管理系统"});
+        res.render('adminpage/addgood',{title:"pos机后台管理系统"
+        });
 
     });
 
@@ -113,7 +108,13 @@ module.exports=function(app){
             return false;
         }
         var newGood = new Good(goodName,goodCount,goodPrice,goodUnit);
-        newGood.save();
+        newGood.save(function(err,user){
+            if(err){
+                return res.redirect("/admin");
+            }
+            console.log(user);
+            res.redirect('/addgood')
+        })
     })
 
 

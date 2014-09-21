@@ -6,7 +6,7 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "connect-flash": "^0.1.1",
+    "connect-flash": "*",
     "connect-mongo": "*",
     "ejs": "*",
     "express": "3.16.8",

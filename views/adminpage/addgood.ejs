@@ -2,13 +2,19 @@
 
 <div class="panel panel-default">
     <div class="panel-heading"><h3>POS后台管理系统</h3></div>
+    <% if (success) { %>
+        <div><%= success %></div>
+    <% } %>
+    <% if (error) { %>
+        <div><%= error %> </div>
+    <% } %>
     <div class="panel-body">
         <div style="border: 1px solid #a9a9a9;width: 20%;height: 500px; background: #a9a9a9;float:left;">
             <a href="/admin " style="color: #000000;"><div style="border: 1px solid #c0c0c0;width: 100%;height: 40px;"><h4 style="text-align: center">商品管理</h4></div></a>
             <a href="#" style="color: #000000;"><div style="border: 1px solid #c0c0c0;width: 100%;height: 40px;"><h4 style="text-align: center">折扣活动</h4></div></a>
         </div>
         <div style="float: right;height: 500px;width: 80%;border: 1px solid #808080">
-            <form role="form" method="post">
+            <form name="form" method="post">
                 <div class="col-md-12 btnBar" style="padding-top: 30px;padding-left: 50px;">
                     <div class="row">
                         <div class="col-xs-3 col-md-3"><button type="submit" class="btn btn-default">保存商品</button></div>
@@ -30,9 +36,9 @@
                                 <label for="inputEmail3" class="col-sm-4 control-label">商品数量：</label>
                                 <div class="col-sm-6">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-default">-</button>
-                                        <input type="text" class="btn btn-default" name="good_count" value="2">
-                                        <button type="button" class="btn btn-default">+</button>
+                                        <button type="button" class="btn btn-default minusGood">-</button>
+                                        <input style="width: 45%;" type="text" class="btn btn-default " id="countGood" name="good_count" value="0">
+                                        <button type="button" class="btn btn-default addGood">+</button>
                                     </div>
                                 </div>
                             </div>
@@ -56,12 +62,10 @@
                             </div>
                         </div>
                     </div>
+                    </div>
                         </form>
                 </div>
         </div>
 </div>
-
-
-
 
 <% include footer.ejs%>

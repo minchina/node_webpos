@@ -89,12 +89,16 @@ module.exports=function(app){
             if(err){
                 return callback(err);
             }
+//            req.flash('success','abc');
             res.render('adminpage/admin',{title:"pos机后台管理系统",cart_total:req.session.total,goods:goods});
         })
     });
 
     app.get('/addgood',function(req,res){
-        res.render('adminpage/addgood',{title:"pos机后台管理系统"
+        res.render('adminpage/addgood',{
+            title:"pos机后台管理系统",
+            success:req.flash('success').toString(),
+            error:req.flash('error').toString()
         });
 
     });
@@ -110,9 +114,10 @@ module.exports=function(app){
         var newGood = new Good(goodName,goodCount,goodPrice,goodUnit);
         newGood.save(function(err,user){
             if(err){
-                return res.redirect("/admin");
+                req.flash('error',"添加失败！");
+                return res.redirect("/addgood");
             }
-            console.log(user);
+            req.flash('success','添加成功！');
             res.redirect('/addgood')
         })
     })

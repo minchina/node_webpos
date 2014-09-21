@@ -90,7 +90,12 @@ module.exports=function(app){
                 return callback(err);
             }
 //            req.flash('success','abc');
-            res.render('adminpage/admin',{title:"pos机后台管理系统",cart_total:req.session.total,goods:goods});
+            res.render('adminpage/admin',{title:"pos机后台管理系统",
+                cart_total:req.session.total,
+                goods:goods,
+                success:req.flash('success').toString(),
+                error:req.flash('error').toString()
+            });
         })
     });
 
@@ -120,6 +125,17 @@ module.exports=function(app){
             req.flash('success','添加成功！');
             res.redirect('/addgood')
         })
+    });
+
+    app.post('/deleted',function(req,res){
+        Good.delete_good(req.body.good_name,function(err,good){
+            if(err){
+                req.flash('error',"删除失败!");
+            }
+            req.flash('success',"删除成功!");
+            res.redirect('/addgood');
+        });
+
     })
 
 

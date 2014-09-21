@@ -40,33 +40,31 @@ Good.prototype.save=function(callback){
 
 };
 
-Good.get_savecount = function(count,barcode,barcodes){
-    if(_.find(barcodes,function(message){return message.barcode == barcode})){
-        return Math.floor(count/3);
-    }
+Good.delete_good=function(good_name,callback){
+    console.log(good_name);
+    mongodb.open(function(err,db){
+        if(err){
+            return callback(err);
+        }
+        db.collection('goods',function(err,collection){
+            if(err){
+                mongodb.close();
+                return callback(err);
+            }
+            collection.remove({"name":good_name},function(err){
+                mongodb.close();
+                if(err){
+                    return callback(err);
+                }
+                callback(null);
+            });
+
+        });
+    });
+
 };
 
-Good.get_no_null_messages=function(messages){
-    return _.filter(messages,function(obj){return obj.count != 0});
 
-};
-
-Good.get_gift=function(buy_goods){
-    return _.filter(buy_goods,function(good){return good.savecount !=0});
-
-};
-
-Good.get_gift_price =function(goods){
-    var price =0;
-    _.each(goods,function(good){price+=good.price*(good.savecount)});
-    return price;
-};
-
-Good.get_total_price = function(goods){
-    var price =0;
-    _.each(goods,function(good){price+=good.price*(good.count-good.savecount)});
-    return price;
-};
 
 Good.get_all_goods = function(callback){
     //打开数据库
@@ -116,4 +114,32 @@ Good.get_promotions = function(callback){
             });
         });
     });
+};
+
+Good.get_savecount = function(count,barcode,barcodes){
+    if(_.find(barcodes,function(message){return message.barcode == barcode})){
+        return Math.floor(count/3);
+    }
+};
+
+Good.get_no_null_messages=function(messages){
+    return _.filter(messages,function(obj){return obj.count != 0});
+
+};
+
+Good.get_gift=function(buy_goods){
+    return _.filter(buy_goods,function(good){return good.savecount !=0});
+
+};
+
+Good.get_gift_price =function(goods){
+    var price =0;
+    _.each(goods,function(good){price+=good.price*(good.savecount)});
+    return price;
+};
+
+Good.get_total_price = function(goods){
+    var price =0;
+    _.each(goods,function(good){price+=good.price*(good.count-good.savecount)});
+    return price;
 };

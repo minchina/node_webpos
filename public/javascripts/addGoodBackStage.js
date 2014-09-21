@@ -1,6 +1,11 @@
-/**
- * Created by cuitmnc on 14-9-21.
- */
+$(".remove_good").on('click',function(){
+    var THIS =this;
+
+   var good_name = $(this).closest(".good_body").find(".good_name").text();
+    $.post('/deleted',{good_name:good_name},function(data){
+        $(THIS).closest(".good_body").remove();
+    })
+});
 
 $(".addGood").on('click',function(){
     var item = $("#countGood");

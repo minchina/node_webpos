@@ -40,6 +40,7 @@ Good.prototype.save=function(callback){
 
 };
 
+
 Good.delete_good=function(good_name,callback){
     mongodb.open(function(err,db){
         if(err){

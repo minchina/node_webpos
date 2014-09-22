@@ -14,12 +14,12 @@
             <a href="#" style="color: #000000;"><div style="border: 1px solid #c0c0c0;width: 100%;height: 40px;"><h4 style="text-align: center">折扣活动</h4></div></a>
         </div>
         <div style="float: right;height: 500px;width: 80%;border: 1px solid #808080">
-            <form name="form" method="post">
+            <form class="form_add" name="form" method="post">
                 <div class="col-md-12 btnBar" style="padding-top: 30px;padding-left: 50px;">
                     <div class="row">
                         <!--<div class="col-xs-3 col-md-3"><button type="submit" class="btn btn-default">保存商品</button></div>-->
-                        <div class="col-xs-3 col-md-3"><button type="submit" class="btn btn-default savegood" ">保存商品</button></div>
-                        <div class="col-xs-3 col-md-3"><a href="/addShopAttr" class="btn btn-default">添加属性</a></div>
+                        <div class="col-xs-3 col-md-3"><button type="submit" class="btn btn-default"  onclick="return save_check()">保存商品</button></div>
+                        <div class="col-xs-3 col-md-3"><a href="/addGoodAttr" class="btn btn-default">添加属性</a></div>
                         <div class="col-xs-3 col-md-3"><a href="#" class="btn btn-default">删除属性</a></div>
                         <div class="col-xs-3 col-md-3"><button type="reset" class="btn btn-default">取消</button></div>
                     </div>
@@ -63,6 +63,7 @@
                             </div>
                         </div>
                     </div>
+
                     </div>
                         </form>
                 </div>

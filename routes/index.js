@@ -1,5 +1,6 @@
 var Good = require('../models/good');
 var _ = require('underscore');
+var Attr = require('../models/attr');
 /*
  * GET home page.
  */
@@ -137,7 +138,34 @@ module.exports=function(app){
             res.redirect('/addgood');
         });
 
-    })
+    });
+//添加商品属性页面
+    app.get('/addGoodAttr',function(req,res){
+        res.render('adminpage/addGoodAttr',{title:"pos机后台管理系统",
+            success:req.flash('success').toString(),
+            error:req.flash('error').toString()
+        });
+
+    });
+
+    app.post('/addGoodAttr',function(req,res){
+        var name = req.body.name;
+        var value = req.body.value;
+        var newattr = new Attr();
+        newattr.name = name;
+        newattr.value = value;
+        newattr.save(function(err,attr){
+            if(err){
+                req.flash('err',"添加失败");
+                return res.redirect('/addgood');
+            }
+            req.flash('success',"添加成功");
+            res.redirect('/addgood');
+        });
+
+    });
+
+//提交商品属性
 
 
 };

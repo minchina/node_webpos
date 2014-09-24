@@ -9,6 +9,7 @@ function Good(name,count,price,unit,barcode,type,savecount){
     this.price = price || 0;
     this.count = count || 0;
     this.savecount = savecount || 0;
+    this.extre_attr = {};
 }
 
 module.exports = Good;
@@ -39,6 +40,7 @@ Good.prototype.save=function(callback){
     });
 
 };
+
 
 
 Good.delete_good=function(good_name,callback){

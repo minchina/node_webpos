@@ -91,7 +91,6 @@ module.exports=function(app){
             if(err){
                 return callback(err);
             }
-//            req.flash('success','abc');
             res.render('adminpage/admin',{title:"pos机后台管理系统",
                 cart_total:req.session.total,
                 goods:goods,
@@ -102,12 +101,22 @@ module.exports=function(app){
     });
 
     app.get('/addgood',function(req,res){
-        res.render('adminpage/addgood',{
-            title:"pos机后台管理系统",
-            success:req.flash('success').toString(),
-            error:req.flash('error').toString()
-        });
 
+        Attr.get_attr(function(err,attr){
+            if(err){
+                return callback(err);
+            }
+            console.log(attr);
+            res.render('adminpage/addgood', {
+                title: "pos机后台管理系统",
+                success: req.flash('success').toString(),
+                error: req.flash('error').toString(),
+                attr_name:attr.name,
+                attr_default_name:attr.value
+            });
+
+//
+        });
     });
 
     app.post('/addgood',function(req,res){
@@ -149,18 +158,28 @@ module.exports=function(app){
     });
 
     app.post('/addGoodAttr',function(req,res){
+        //这里需要新建立一个attr对象，用来显示新增加的属性
         var name = req.body.name;
         var value = req.body.value;
-        var newattr = new Attr();
-        newattr.name = name;
-        newattr.value = value;
-        newattr.save(function(err,attr){
+        Attr.get(name,function(err,attr){
             if(err){
-                req.flash('err',"添加失败");
+                req.flash('error',"添加失败");
                 return res.redirect('/addgood');
             }
-            req.flash('success',"添加成功");
-            res.redirect('/addgood');
+            if(attr){
+                req.flash('error',"属性已经存在");
+                return res.redirect('/addgood');
+            }
+            var newattr = new Attr({name:name,value:value});
+            newattr.save(function(err,attr){
+                if(err){
+                    req.flash('error',"添加失败");
+                    return res.redirect('/addgood');
+                }
+                req.flash('success',"添加成功");
+                res.redirect('/addgood');
+            })
+
         });
 
     });

@@ -1,5 +1,5 @@
 function save_check(){
-    
+
     var flag = true;
     $(".form_add input").each(function(){
         if($(this).val()==""){

@@ -181,9 +181,27 @@ module.exports=function(app){
     });
 
     app.get('/delAttr1',function(req,res){
-        res.render('adminpage/deleAttrFromAdd',{title:"pos机后台管理系统"})
+        Attr.get_attr(function(err,attr){
+           if(err){
+               return callback(err);
+           }
+            res.render('adminpage/deleAttrFromAdd',{title:"pos机后台管理系统",
+                attrs:attr
+            })
 
+        });
     });
+    app.post('/delAttr1',function(req,res){
+        var attrName = req.body.attr_name;
+        Attr.delete_attr(attrName,function(err,attr){
+            if(err){
+                return callback(err);
+            }
+            res.redirect('/addgood');
+            req.flash('success',"成功删除属性");
+
+        })
+    })
 
 
 

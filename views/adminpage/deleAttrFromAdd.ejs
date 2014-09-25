@@ -11,6 +11,32 @@
         <div>
             <a href="/admin">商品信息管理</a> >><a href="/addgood">添加商品</a>  >><span>删除属性</span>
         </div>
+        <br>
+        <br>
+        <div style="float: right;height: 500px;width: 80%;border: 1px solid #808080">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>属性名称</th>
+                            <th>属性值</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <%attrs.forEach(function(attr,index){%>
+                        <tr class="good_body">
+                            <td class="attr_name"><%= attr.name%></td>
+                            <td><%= attr.value%></td>
+                            <td><button type="submit" class="btn btn-link delAttrAdd" >删除</button></td>
+                        </tr>
+                        <%})%>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
 
 

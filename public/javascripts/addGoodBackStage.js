@@ -21,6 +21,14 @@ function attr_check(){
     return flag;
 }
 
+$(".delAttrAdd").on('click',function(){
+    var THIS = this;
+    var attrName = $(this).closest(".good_body").find(".attr_name").text();
+    $.post('/delAttr1',{attr_name:attrName},function(data){
+        window.location.assign('/addgood');
+    })
+});
+
 $(".remove_good").on('click',function(){
     var THIS =this;
    var good_name = $(this).closest(".good_body").find(".good_name").text();

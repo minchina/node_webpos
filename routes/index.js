@@ -106,16 +106,12 @@ module.exports=function(app){
             if(err){
                 return callback(err);
             }
-            console.log(attr);
             res.render('adminpage/addgood', {
                 title: "pos机后台管理系统",
                 success: req.flash('success').toString(),
                 error: req.flash('error').toString(),
-                attr_name:attr.name,
-                attr_default_name:attr.value
+                attrs:attr
             });
-
-//
         });
     });
 
@@ -156,7 +152,7 @@ module.exports=function(app){
         });
 
     });
-
+    //提交商品属性
     app.post('/addGoodAttr',function(req,res){
         //这里需要新建立一个attr对象，用来显示新增加的属性
         var name = req.body.name;
@@ -184,7 +180,12 @@ module.exports=function(app){
 
     });
 
-//提交商品属性
+    app.get('/delAttr1',function(req,res){
+        res.render('adminpage/deleAttrFromAdd',{title:"pos机后台管理系统"})
+
+    });
+
+
 
 
 };

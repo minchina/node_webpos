@@ -70,13 +70,13 @@ Attr.get_attr = function(callback){
                 return callback(err);
             }
             collection.find({}).sort({
-                time:-1
+                _id:1
             }).toArray(function(err,goods){
                 mongodb.close();
                 if(err){
                     return callback(err);
                 }
-                callback(null,goods[0]);
+                callback(null,goods);
             });
         });
     });

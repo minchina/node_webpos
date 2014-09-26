@@ -10,6 +10,7 @@ function Good(name,count,price,unit,barcode,type,savecount){
     this.count = count || 0;
     this.savecount = savecount || 0;
     this.extre_attr = {};
+    this.date = Date.now();
 }
 
 module.exports = Good;

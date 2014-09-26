@@ -10,6 +10,7 @@
     "connect-mongo": "*",
     "ejs": "*",
     "express": "3.16.8",
+    "moment": "^2.8.3",
     "mongodb": "*",
     "underscore": "*"
   }

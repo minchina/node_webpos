@@ -9,7 +9,7 @@ function Good(name,count,price,unit,barcode,type,savecount){
     this.price = price || 0;
     this.count = count || 0;
     this.savecount = savecount || 0;
-    this.extre_attr = {};
+    this.extre_attr = null;
     this.date = Date.now();
 }
 
@@ -111,6 +111,55 @@ Good.get_all_goods = function(callback){
                     return callback(err);
                 }
                 callback(null,goods);
+            });
+        });
+    });
+};
+Good.get_good_by_name = function(good_name,callback){
+    //打开数据库
+    mongodb.open(function(err,db){
+        if(err){
+            return callback(err);
+        }
+        //读取goods集合
+        db.collection('goods',function(err,collection){
+            if(err){
+                mongodb.close();
+                return callback(err);
+            }
+            collection.find({name:good_name}).sort({
+                _id:1
+            }).toArray(function(err,goods){
+                mongodb.close();
+                if(err){
+                    return callback(err);
+                }
+                callback(null,goods);
+            });
+        });
+    });
+};
+
+
+
+Good.deleted_Attr_by_name = function(good_name,attr_name,callback){
+    //打开数据库
+    mongodb.open(function(err,db){
+        if(err){
+            return callback(err);
+        }
+        //读取goods集合
+        db.collection('goods',function(err,collection){
+            if(err){
+                mongodb.close();
+                return callback(err);
+            }
+            collection.update({name:good_name},{$pull:{extre_attr:{name:attr_name}}},function(err){
+                mongodb.close();
+                if(err){
+                    return callback(err);
+                }
+                callback(null);
             });
         });
     });

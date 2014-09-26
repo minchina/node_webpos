@@ -3,10 +3,10 @@
 <div class="panel panel-default">
     <div class="panel-heading"><h3>POS后台管理系统</h3></div>
     <% if (success) { %>
-        <div><%= success %></div>
+    <div><%= success %></div>
     <% } %>
     <% if (error) { %>
-        <div><%= error %> </div>
+    <div><%= error %> </div>
     <% } %>
     <div class="panel-body">
         <div style="border: 1px solid #a9a9a9;width: 20%;height: 500px; background: #a9a9a9;float:left;">
@@ -20,7 +20,7 @@
                         <!--<div class="col-xs-3 col-md-3"><button type="submit" class="btn btn-default">保存商品</button></div>-->
                         <div class="col-xs-3 col-md-3"><button type="submit" class="btn btn-default"  onclick="return save_check()">保存商品</button></div>
                         <div class="col-xs-3 col-md-3"><a href="/addGoodAttr" class="btn btn-default">添加属性</a></div>
-                        <div class="col-xs-3 col-md-3"><a href="/delAttr1" class="btn btn-default">删除属性</a></div>
+                        <div class="col-xs-3 col-md-3"><a href="/delAttr2/?good_name=<%=good.name%>" class="btn btn-default">删除属性</a></div>
                         <div class="col-xs-3 col-md-3"><button type="reset" class="btn btn-default">取消</button></div>
                     </div>
 
@@ -30,14 +30,14 @@
                                 商品名称：
                             </td>
                             <td>
-                                <input type="text"  name="good_name" placeholder="请输入商品名称" size="20">
+                                <input type="text"  name="good_name" placeholder="请输入商品名称" size="20" value="<%= good.name%>">
                             </td>
                             <td>
                                 商品数量：</td>
                             <td>
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default minusGood">-</button>
-                                    <input type="text" class="btn btn-default" id="countGood" name="good_count" value="0" size="2">
+                                    <input type="text" class="btn btn-default" id="countGood" name="good_count" value="<%= good.count%>" size="2">
                                     <button type="button" class="btn btn-default addGood">+</button>
                                 </div>
                             </td>
@@ -46,28 +46,30 @@
                             <td>
                                 单价（元）：</td>
                             <td>
-                                <input type="text"  name="good_price" placeholder="请输入单价" size="20">
+                                <input type="text"  name="good_price" placeholder="请输入单价" value="<%= good.price%>" size="20">
                             </td>
                             <td>
                                 单位：</td>
                             <td>
-                                <input type="text" name="good_unit" placeholder="请输入单位" size="20">
+                                <input type="text" name="good_unit" placeholder="请输入单位" value="<%= good.unit%>" size="20">
                             </td>
                         </tr>
-                        <%attrs.forEach(function(attr,index){%>
-                            <%if(index % 2==0 ){%>
-                                <tr></tr>
-                            <%}%>
-                                    <td><%= attr.name %></td>
-                                    <td><input type="text" name="<%= attr.name %>"  value="<%= attr.value %>"> </td>
+
+                        <%good.extre_attr.forEach(function(attr,index){%>
+                        <%if(index % 2==0 ){%>
+                        <tr></tr>
+                        <%}%>
+                        <td><%= attr.name %></td>
+                        <td><input type="text" name="<%= attr.name %>"  value="<%= attr.value %>"> </td>
                         <%})%>
+
 
                     </table>
 
-                    </div>
-                        </form>
                 </div>
+            </form>
         </div>
+    </div>
 </div>
 
 <% include footer.ejs%>

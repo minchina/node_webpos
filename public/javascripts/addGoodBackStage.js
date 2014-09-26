@@ -21,6 +21,19 @@ function attr_check(){
     return flag;
 }
 
+$(".delAttrDet").on('click',function(){
+    var attr_name = $(this).closest('.good_body').find('.attr_name').text();
+    var good_name = $(this).closest('.good_body').find('.hidden').text();
+    if(!confirm("确认要删除该属性吗？")){
+        return false;
+    }
+    $.post('/delAttr2',{attr_name:attr_name,good_name:good_name},function(data){
+        window.location.assign('/gooddetail/?good_name='+data.good_name);
+
+
+    })
+});
+
 $(".delAttrAdd").on('click',function(){
     var THIS = this;
     var attrName = $(this).closest(".good_body").find(".attr_name").text();

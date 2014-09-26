@@ -9,29 +9,6 @@ function Attr(attr){
 
 module.exports = Attr;
 
-
-//Attr.get = function(attr_name,callback){
-//  mongodb.open(function(err,db){
-//      if(err){
-//          return callback(err);
-//      }
-//      db.collection('attr',function(err,collection){
-//         if(err){
-//             mongodb.close();
-//             return callback(err);
-//         }
-//          collection.findOne({name:attr_name},function(err,doc){
-//              if(doc){
-//                  var attr = new Attr(doc);
-//                  callback(null,attr);
-//              }else{
-//                  return callback(err,null);
-//              }
-//          });
-//      });
-//  });
-//};
-
 Attr.delete_attr=function(name,callback){
     mongodb.open(function(err,db){
         if(err){

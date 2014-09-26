@@ -121,15 +121,22 @@ module.exports=function(app){
         if (!_.where(req.session.item,{name:goodName})){
             return false;
         }
-        var newGood = new Good(goodName,goodCount,goodPrice,goodUnit);
-        newGood.save(function(err,user){
-            if(err){
-                req.flash('error',"添加失败！");
-                return res.redirect("/addgood");
-            }
-            req.flash('success','添加成功！');
-            res.redirect('/addgood')
-        })
+        Attr.get_attr(function(err,attr){
+           if(err){
+               return callback(err);
+           }
+            var newGood = new Good(goodName,goodCount,goodPrice,goodUnit);
+            newGood.extre_attr = attr;
+            newGood.save(function(err,user){
+                if(err){
+                    req.flash('error',"添加失败！");
+                    return res.redirect("/addgood");
+                }
+                req.flash('success','添加成功！');
+                res.redirect('/addgood')
+            })
+        });
+
     });
 
     app.post('/deleted',function(req,res){
@@ -189,7 +196,21 @@ module.exports=function(app){
 
         });
     });
-    app.post('/delAttr1',function(req,res){
+
+    app.get('/delAttr2',function(req,res){
+        var good_name = req.query.good_name;
+        Good.get_good_by_name(good_name,function(err,attr){
+            if(err){
+                return callback(err);
+            }
+            res.render('adminpage/deleAttrFromDet',{title:"pos机后台管理系统",
+                attrs:attr[0].extre_attr.reverse(),
+                good_name:good_name
+            })
+
+        });
+    });
+        app.post('/delAttr1',function(req,res){
         var attrName = req.body.attr_name;
         Attr.delete_attr(attrName,function(err,attr){
             if(err){
@@ -199,7 +220,19 @@ module.exports=function(app){
             req.flash('success',"成功删除属性");
 
         })
-    })
+    });
+
+    app.post('/delAttr2',function(req,res){
+        var attr_name = req.body.attr_name;
+        var good_name = req.body.good_name;
+        Good.deleted_Attr_by_name(good_name,attr_name,function(err,data){
+            if(err){
+                return callback(err);
+            }
+            req.flash('success',"删除成功");
+            res.json({good_name:good_name})
+        })
+    });
 
     app.post('/addgoodadpage',function(req,res){
         var goodName = req.body.good_name;
@@ -210,6 +243,21 @@ module.exports=function(app){
             }
             res.json({result:"success"});
         })
+    });
+
+    app.get('/gooddetail',function(req,res){
+        var goodName = req.query.good_name;
+        Good.get_good_by_name(goodName,function(err,data){
+            if(err){
+                return callback(err);
+            }
+            res.render('adminpage/goodDetail',{title:"pos机后台管理",
+                success:req.flash('success').toString(),
+                error:req.flash('error').toString(),
+                good:data[0]
+            })
+        });
+
     })
 
 

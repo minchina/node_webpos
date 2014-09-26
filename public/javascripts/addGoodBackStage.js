@@ -56,3 +56,26 @@ $(".minusGood").on('click',function(){
     var count = parseInt(item.val())-1;
     item.val(count);
 });
+
+$(".addgoodadmin").on('click',function(){
+    var THIS=this;
+    var goodName = $(this).closest('.good_body').find('.good_name').text();
+    var goodNum = $(this).closest('.good_body').find('.shopNum').text();
+    goodNum = parseInt(goodNum)+1;
+    $.post('/addgoodadpage',{good_name:goodName,good_count:goodNum},function(data){
+        $(THIS).closest('.good_body').find('.shopNum').text(goodNum);
+    })
+});
+
+$(".minusgoodadmin").on('click',function(){
+    var THIS=this;
+    var goodName = $(this).closest('.good_body').find('.good_name').text();
+    var goodNum = $(this).closest('.good_body').find('.shopNum').text();
+    if(parseInt(goodNum)==0){
+        return false;
+    }
+    goodNum = parseInt(goodNum)-1;
+    $.post('/addgoodadpage',{good_name:goodName,good_count:goodNum},function(data){
+        $(THIS).closest('.good_body').find('.shopNum').text(goodNum);
+    })
+});

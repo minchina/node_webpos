@@ -40,8 +40,6 @@ module.exports=function(app){
             goods:goods})
     });
 
-
-
     app.get('/payment',function(req,res){
         var goods = Good.get_no_null_messages(req.session.item);
 
@@ -200,6 +198,17 @@ module.exports=function(app){
             res.redirect('/addgood');
             req.flash('success',"成功删除属性");
 
+        })
+    })
+
+    app.post('/addgoodadpage',function(req,res){
+        var goodName = req.body.good_name;
+        var goodNum  = req.body.good_count;
+        Good.update(goodName,goodNum,function(err,data){
+            if(err){
+                return callback(err);
+            }
+            res.json({result:"success"});
         })
     })
 

@@ -41,6 +41,28 @@ Good.prototype.save=function(callback){
 
 };
 
+Good.update=function(good_name,good_num,callback){
+    mongodb.open(function(err,db){
+        if(err){
+            return callback(err);
+        }
+        db.collection('goods',function(err,collection){
+            if(err){
+                mongodb.close();
+                return callback(err);
+            }
+            collection.update({"name":good_name},{$set:{count:good_num}},function(err){
+                mongodb.close();
+                if(err){
+                    return callback(err);
+                }
+                callback(null);
+            })
+
+        })
+    })
+};
+
 
 
 Good.delete_good=function(good_name,callback){

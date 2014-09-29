@@ -44,7 +44,6 @@ $(".delAttrDet").on('click',function(){
 });
 
 $(".delAttrAdd").on('click',function(){
-    var THIS = this;
     var attrName = $(this).closest(".good_body").find(".attr_name").text();
     $.post('/delAttr1',{attr_name:attrName},function(data){
         window.location.assign('/addgood');
@@ -78,26 +77,25 @@ $(".minusGood").on('click',function(){
     var count = parseInt(item.val())-1;
     item.val(count);
 });
-
-$(".addgoodadmin").on('click',function(){
+$('.addgoodadmin').click(function(){
     var THIS=this;
     var goodName = $(this).closest('.good_body').find('.good_name').text();
-    var goodNum = $(this).closest('.good_body').find('.shopNum').text();
+    var goodNum = $(this).prev().val();
     goodNum = parseInt(goodNum)+1;
     $.post('/addgoodadpage',{good_name:goodName,good_count:goodNum},function(data){
-        $(THIS).closest('.good_body').find('.shopNum').text(goodNum);
+        $(THIS).prev().val(goodNum);
     })
 });
 
-$(".minusgoodadmin").on('click',function(){
+$(".minusgoodadmin").click(function(){
     var THIS=this;
     var goodName = $(this).closest('.good_body').find('.good_name').text();
-    var goodNum = $(this).closest('.good_body').find('.shopNum').text();
+    var goodNum = $(this).next().val();
     if(parseInt(goodNum)==0){
         return false;
     }
     goodNum = parseInt(goodNum)-1;
     $.post('/addgoodadpage',{good_name:goodName,good_count:goodNum},function(data){
-        $(THIS).closest('.good_body').find('.shopNum').text(goodNum);
+        $(THIS).next().val(goodNum);
     })
 });

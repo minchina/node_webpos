@@ -132,8 +132,15 @@ module.exports=function(app){
                     req.flash('error',"添加失败！");
                     return res.redirect("/addgood");
                 }
-                req.flash('success','添加成功！');
-                res.redirect('/addgood')
+                Attr.delete_all_attr(function(err,data){
+                    if(err){
+                        return callback(err);
+                    }
+                    req.flash('success','添加成功！');
+                    res.redirect('/addgood')
+
+                });
+
             })
         });
 
@@ -149,7 +156,7 @@ module.exports=function(app){
         });
 
     });
-//添加商品属性页面
+
     app.get('/addGoodAttr',function(req,res){
         res.render('adminpage/addGoodAttr',{title:"pos机后台管理系统",
             success:req.flash('success').toString(),
@@ -157,7 +164,7 @@ module.exports=function(app){
         });
 
     });
-    //提交商品属性
+
     app.post('/addGoodAttr',function(req,res){
         //这里需要新建立一个attr对象，用来显示新增加的属性
         var name = req.body.name;
@@ -317,10 +324,4 @@ module.exports=function(app){
 
         });
     })
-
-
-
-
-
-
 };

@@ -210,7 +210,7 @@ module.exports=function(app){
 
         });
     });
-        app.post('/delAttr1',function(req,res){
+    app.post('/delAttr1',function(req,res){
         var attrName = req.body.attr_name;
         Attr.delete_attr(attrName,function(err,attr){
             if(err){
@@ -247,6 +247,7 @@ module.exports=function(app){
 
     app.get('/gooddetail',function(req,res){
         var goodName = req.query.good_name;
+        console.log("======================="+goodName);
         Good.get_good_by_name(goodName,function(err,data){
             if(err){
                 return callback(err);
@@ -258,7 +259,66 @@ module.exports=function(app){
             })
         });
 
+    });
+
+    app.post('/gooddetail',function(req,res){
+        var goodName = req.body.good_name;
+        var goodCount = req.body.good_count;
+        var goodUnit = req.body.good_unit;
+        var goodPrice =req.body.good_price;
+
+        Good.get_good_by_name(goodName,function(err,good){
+            if(err){
+                return callback(err);
+            }
+            //说明该商品存在
+            if(good){
+
+                Good.get_good_by_name(goodName,function(err,goodattr){
+                    if(err){
+                        return callback(err);
+                    }
+                    var good_pro = goodattr[0].extre_attr;
+                    var exter=[];
+                    _.each(good_pro,function(attr){
+                        exter.push({name:attr.name,value:req.body[attr.name]});
+                    });
+                    var updategood = new Good(goodName,goodCount,goodPrice,goodUnit);
+                    updategood.extre_attr = exter;
+                    Good.delete_good(goodName,function(err,data){
+                        if(err){
+                            return callback(err);
+                        }
+                        updategood.save(function(err,data){
+                            if(err){
+                                return callback(err);
+                            }
+                            req.flash("success","更新成功");
+                            res.redirect.apply('./?good_name='+goodName);
+                        });
+                    })
+                })
+
+
+            }
+        })
+
+    });
+
+    app.post('/editGoodNum',function(req,res){
+        var goodName = req.body.goodName;
+        var goodCount = parseInt(req.body.goodCount);
+        Good.update(goodName,goodCount,function(err,data){
+            if(err){
+                return callback(err);
+            }
+            req.flash('success',"修改成功");
+            res.redirect('/admin');
+
+        });
     })
+
+
 
 
 

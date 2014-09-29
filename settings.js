@@ -1,5 +1,5 @@
 module.exports = {
-    cookieSecret: 'mynodepos',
-    db: 'testpos',
+    cookieSecret: 'node_webpos',
+    db: 'pos',
     host: 'localhost'
 };

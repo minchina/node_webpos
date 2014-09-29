@@ -21,6 +21,15 @@ function attr_check(){
     return flag;
 }
 
+
+$('.item-count').change(function(){
+    var good_count = parseInt($(this).val());
+    var good_name = $(this).closest('.good_body').find('.good_name').text();
+    $.post('/editGoodNum',{goodName:good_name,goodCount:good_count},function(data){
+
+    })
+});
+
 $(".delAttrDet").on('click',function(){
     var attr_name = $(this).closest('.good_body').find('.attr_name').text();
     var good_name = $(this).closest('.good_body').find('.hidden').text();

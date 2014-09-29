@@ -15,8 +15,6 @@ function Good(name,count,price,unit,barcode,type,savecount){
 
 module.exports = Good;
 
-
-
 Good.prototype.save=function(callback){
 
     var new_good = this;
@@ -64,8 +62,6 @@ Good.update=function(good_name,good_num,callback){
     })
 };
 
-
-
 Good.delete_good=function(good_name,callback){
     mongodb.open(function(err,db){
         if(err){
@@ -88,8 +84,6 @@ Good.delete_good=function(good_name,callback){
     });
 
 };
-
-
 
 Good.get_all_goods = function(callback){
     //打开数据库
@@ -115,6 +109,39 @@ Good.get_all_goods = function(callback){
         });
     });
 };
+
+Good.getTen=function(name,page,callback){
+    mongodb.open(function(err,db){
+        if(err){
+            return callback(err);
+        }
+        db.collection('goods',function(err,collection){
+            if(err){
+                mongodb.close();
+                return callback(err);
+            }
+            var query={};
+            if(name){
+                query.name=name;
+            }
+            collection.count(query,function(err,total){
+                collection.find(query,{
+                    skip:(page-1)*10,
+                    limit:10
+                }).sort({
+                    time:-1
+                }).toArray(function(err,docs){
+                    mongodb.close();
+                    if(err){
+                        return callback(err);
+                    }
+                    callback(null,docs,total);
+                });
+            });
+        });
+    });
+};
+
 Good.get_good_by_name = function(good_name,callback){
     //打开数据库
     mongodb.open(function(err,db){
@@ -139,7 +166,6 @@ Good.get_good_by_name = function(good_name,callback){
         });
     });
 };
-
 
 
 Good.deleted_Attr_by_name = function(good_name,attr_name,callback){

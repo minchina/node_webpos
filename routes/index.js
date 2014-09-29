@@ -84,18 +84,21 @@ module.exports=function(app){
     });
 
     app.get('/admin',function(req,res){
-
-        Good.get_all_goods(function(err,goods){
+        var page = req.query.p ? parseInt(req.query.p):1;
+        Good.getTen(null,page,function(err,goods,total){
             if(err){
                 return callback(err);
             }
             res.render('adminpage/admin',{title:"pos机后台管理系统",
                 cart_total:req.session.total,
                 goods:goods,
+                page:page,
+                isFirstPage:(page-1)==0,
+                isLastPage:((page - 1) * 10 + goods.length) == total,
                 success:req.flash('success').toString(),
                 error:req.flash('error').toString()
             });
-        })
+        });
     });
 
     app.get('/addgood',function(req,res){

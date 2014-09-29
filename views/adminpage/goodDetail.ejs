@@ -63,6 +63,16 @@
                         <td><input type="text" name="<%= attr.name %>"  value="<%= attr.value %>"> </td>
                         <%})%>
 
+                        <% if (new_attr){%>
+                            <%new_attr.forEach(function(attr,index){%>
+                            <%if(index % 2==0 ){%>
+                            <tr></tr>
+                            <%}%>
+                            <td><%= attr.name %></td>
+                            <td><input type="text" name="<%= attr.name %>"  value="<%= attr.value %>"> </td>
+                            <%})%>
+                        <%}%>
+
 
                     </table>
 

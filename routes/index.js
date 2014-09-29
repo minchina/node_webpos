@@ -255,14 +255,22 @@ module.exports=function(app){
     app.get('/gooddetail',function(req,res){
         var goodName = req.query.good_name;
         console.log("======================="+goodName);
-        Good.get_good_by_name(goodName,function(err,data){
+        Good.get_good_by_name(goodName,function(err,good){
             if(err){
                 return callback(err);
             }
-            res.render('adminpage/goodDetail',{title:"pos机后台管理",
-                success:req.flash('success').toString(),
-                error:req.flash('error').toString(),
-                good:data[0]
+            Attr.get_attr(function(err,attr){
+                if(err){
+                    return callback(err);
+                }
+                res.render('adminpage/goodDetail',{title:"pos机后台管理",
+                    success:req.flash('success').toString(),
+                    error:req.flash('error').toString(),
+                    good:good[0],
+                    new_attr:attr
+
+            });
+
             })
         });
 
@@ -292,18 +300,34 @@ module.exports=function(app){
                     });
                     var updategood = new Good(goodName,goodCount,goodPrice,goodUnit);
                     updategood.extre_attr = exter;
-                    Good.delete_good(goodName,function(err,data){
+                    Attr.get_attr(function(err,attrs){
                         if(err){
                             return callback(err);
                         }
-                        updategood.save(function(err,data){
+                        _.each(attrs,function(attr){
+                            updategood.extre_attr.push({name:attr.name,value:attr.value});
+                        });
+                        Good.delete_good(goodName,function(err,data){
                             if(err){
                                 return callback(err);
                             }
-                            req.flash("success","更新成功");
-                            res.redirect.apply('./?good_name='+goodName);
-                        });
-                    })
+                            updategood.save(function(err,good){
+                                if(err){
+                                    return callback(err);
+                                }
+                                Attr.delete_all_attr(function(err,nodata){
+                                    if(err){
+                                        return callback(err);
+                                    }
+                                    req.flash("success","更新成功");
+                                    res.redirect.apply('./?good_name='+goodName);
+                                });
+
+                            });
+                        })
+
+                    });
+
                 })
 
 

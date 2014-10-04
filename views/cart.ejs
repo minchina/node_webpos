@@ -19,10 +19,10 @@
                 <tbody class="item-body">
                 <% goods.forEach(function(shop,index){ %>
                 <tr class="good_body">
-                    <td><%= shop.type %></td>
-                    <td class="item_name"><%= shop.name %></td>
-                    <td class="item-price"><%= shop.price %></td>
-                    <td><%= shop.unit %></td>
+                    <td><%= shop.type || "无"%></td>
+                    <td class="item_name"><%= shop.name || "无"%></td>
+                    <td class="item-price"><%= shop.price || "无"%></td>
+                    <td><%= shop.unit || "无"%></td>
                     <td class="hidden item-savecount"><%= shop.savecount %></td>
                     <td class="hidden item-barcode"><%= shop.barcode %></td>
                     <td><div class="btn-group"><button class="btn btn-default item-minus">-</button>

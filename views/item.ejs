@@ -19,10 +19,10 @@
                 <tbody class="item-body">
                 <% goods.forEach(function(shop,index){ %>
                 <tr>
-                    <td><%= shop.type %></td>
-                    <td><%= shop.name %></td>
-                    <td><%= shop.price %></td>
-                    <td><%= shop.unit %></td>
+                    <td><%= shop.type || "无"%></td>
+                    <td><%= shop.name || "无"%></td>
+                    <td><%= shop.price || "无"%></td>
+                    <td><%= shop.unit || "无"%></td>
                     <td class="hidden item-barcode"><%= shop.barcode %></td>
                     <td><a class="btn btn-primary addCart" type="button" href="#" onclick="addtocart('<%= shop.name%>')">加入购物车</a></td>
                 </tr>

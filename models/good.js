@@ -129,7 +129,7 @@ Good.getTen=function(name,page,callback){
                     skip:(page-1)*10,
                     limit:10
                 }).sort({
-                    time:-1
+                    _id:-1
                 }).toArray(function(err,docs){
                     mongodb.close();
                     if(err){

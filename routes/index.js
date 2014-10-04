@@ -220,6 +220,7 @@ module.exports=function(app){
 
         });
     });
+
     app.post('/delAttr1',function(req,res){
         var attrName = req.body.attr_name;
         Attr.delete_attr(attrName,function(err,attr){
@@ -323,7 +324,7 @@ module.exports=function(app){
                                         return callback(err);
                                     }
                                     req.flash("success","更新成功");
-                                    res.redirect.apply('./?good_name='+goodName);
+                                    res.redirect('./?good_name='+goodName);
                                 });
 
                             });
@@ -348,6 +349,31 @@ module.exports=function(app){
             }
             req.flash('success',"修改成功");
             res.redirect('/admin');
+
+        });
+    });
+
+    app.get('/addPropertyInDet',function(req,res){
+        var goodName = req.query.good_name;
+        res.render('adminpage/addPropertyInDet',{title:"pos机后台管理系统",
+            success:req.flash('success').toString(),
+            error:req.flash('error').toString(),
+            good_name:goodName
+        });
+    });
+
+    app.post('/addPropertyInDet',function(req,res){
+        var goodName = req.query.good_name;
+        var propertyName = req.body.name;
+        var propertyValue = req.body.value;
+        var newProperty = new Attr({name:propertyName,value:propertyValue});
+        newProperty.save(function(err,attr){
+           if(err){
+               return callback(err);
+           }
+           req.flash('success',"添加成功");
+            var url = '/gooddetail'+'?good_name='+goodName;
+           res.redirect(url);
 
         });
     })

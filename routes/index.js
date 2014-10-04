@@ -376,5 +376,17 @@ module.exports=function(app){
            res.redirect(url);
 
         });
-    })
+    });
+
+    app.get('/addpromotion',function(req,res){
+        res.render('promotionpage/addpromotion',{success:req.flash('success').toString(),
+                error:req.flash('error').toString()
+        });
+    });
+
+    app.get('/addrule',function(req,res){
+        res.render('promotionpage/addrule',{success:req.flash('success').toString(),
+            error:req.flash('error').toString()
+        });
+    });
 };

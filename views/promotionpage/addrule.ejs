@@ -22,12 +22,12 @@
         </div>
 
         <div style="height: auto;width: 80%;float: left;margin-top: 50px;">
-            <form class="form-horizontal" role="form">
+            <form class="form-horizontal" role="form" method="post">
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-3 control-label">打折规则:</label>
 
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" placeholder="请输入打折规则">
+                        <input type="text" class="form-control" name="ruleDetail" placeholder="请输入打折规则">
                     </div>
                 </div>
                 <div class="form-group">
@@ -62,12 +62,13 @@
                     </div>
                 </div>
 
-            </form>
+           
         </div>
         <div style="float: right; margin-right: 30px;">
-            <button type="button" class="btn btn-default">添加</button>
-            <button type="button" class="btn btn-default">取消</button>
+            <button type="submit" class="btn btn-default">添加</button>
+            <button type="reset" class="btn btn-default">取消</button>
         </div>
+         </form>
     </div>
 
 </div>

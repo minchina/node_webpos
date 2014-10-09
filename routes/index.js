@@ -1,6 +1,8 @@
 var Good = require('../models/good');
 var _ = require('underscore');
 var Attr = require('../models/attr');
+var moment = require('moment');
+var Promotion = require('../models/promotion');
 /*
  * GET home page.
  */
@@ -11,7 +13,7 @@ module.exports=function(app){
        }
         Good.get_promotions(function(err,promotions){
             if(err){
-                return callback(err);
+                return console.log(err);
             }
             if(!req.session.promotion){
                 req.session.promotion = promotions;
@@ -87,7 +89,7 @@ module.exports=function(app){
         var page = req.query.p ? parseInt(req.query.p):1;
         Good.getTen(null,page,function(err,goods,total){
             if(err){
-                return callback(err);
+                return console.log(err);
             }
             res.render('adminpage/admin',{title:"pos机后台管理系统",
                 cart_total:req.session.total,
@@ -105,7 +107,7 @@ module.exports=function(app){
 
         Attr.get_attr(function(err,attr){
             if(err){
-                return callback(err);
+                return console.log(err);
             }
             res.render('adminpage/addgood', {
                 title: "pos机后台管理系统",
@@ -126,7 +128,7 @@ module.exports=function(app){
         }
         Attr.get_attr(function(err,attr){
            if(err){
-               return callback(err);
+               return console.log(err);
            }
             var newGood = new Good(goodName,goodCount,goodPrice,goodUnit);
             newGood.extre_attr = attr;
@@ -137,7 +139,7 @@ module.exports=function(app){
                 }
                 Attr.delete_all_attr(function(err,data){
                     if(err){
-                        return callback(err);
+                        return console.log(err);
                     }
                     req.flash('success','添加成功！');
                     res.redirect('/addgood')
@@ -198,7 +200,7 @@ module.exports=function(app){
     app.get('/delAttr1',function(req,res){
         Attr.get_attr(function(err,attr){
            if(err){
-               return callback(err);
+               return console.log(err);
            }
             res.render('adminpage/deleAttrFromAdd',{title:"pos机后台管理系统",
                 attrs:attr
@@ -211,7 +213,7 @@ module.exports=function(app){
         var good_name = req.query.good_name;
         Good.get_good_by_name(good_name,function(err,attr){
             if(err){
-                return callback(err);
+                return console.log(err);
             }
             res.render('adminpage/deleAttrFromDet',{title:"pos机后台管理系统",
                 attrs:attr[0].extre_attr.reverse(),
@@ -225,7 +227,7 @@ module.exports=function(app){
         var attrName = req.body.attr_name;
         Attr.delete_attr(attrName,function(err,attr){
             if(err){
-                return callback(err);
+                return console.log(err);
             }
             res.redirect('/addgood');
             req.flash('success',"成功删除属性");
@@ -238,7 +240,7 @@ module.exports=function(app){
         var good_name = req.body.good_name;
         Good.deleted_Attr_by_name(good_name,attr_name,function(err,data){
             if(err){
-                return callback(err);
+                return console.log(err);
             }
             req.flash('success',"删除成功");
             res.json({good_name:good_name})
@@ -250,7 +252,7 @@ module.exports=function(app){
         var goodNum  = req.body.good_count;
         Good.update(goodName,goodNum,function(err,data){
             if(err){
-                return callback(err);
+                return console.log(err);
             }
             res.json({result:"success"});
         })
@@ -261,11 +263,11 @@ module.exports=function(app){
         console.log("======================="+goodName);
         Good.get_good_by_name(goodName,function(err,good){
             if(err){
-                return callback(err);
+                return console.log(err);
             }
             Attr.get_attr(function(err,attr){
                 if(err){
-                    return callback(err);
+                    return console.log(err);
                 }
                 res.render('adminpage/goodDetail',{title:"pos机后台管理",
                     success:req.flash('success').toString(),
@@ -288,14 +290,14 @@ module.exports=function(app){
 
         Good.get_good_by_name(goodName,function(err,good){
             if(err){
-                return callback(err);
+                return console.log(err);
             }
             //说明该商品存在
             if(good){
 
                 Good.get_good_by_name(goodName,function(err,goodattr){
                     if(err){
-                        return callback(err);
+                        return console.log(err);
                     }
                     var good_pro = goodattr[0].extre_attr;
                     var exter=[];
@@ -306,33 +308,33 @@ module.exports=function(app){
                     updategood.extre_attr = exter;
                     Attr.get_attr(function(err,attrs){
                         if(err){
-                            return callback(err);
+                            return console.log(err);
                         }
                         _.each(attrs,function(attr){
                             updategood.extre_attr.push({name:attr.name,value:attr.value});
                         });
-                        Good.delete_good(goodName,function(err,data){
+                        Good.delete_good(goodName,function(err){
                             if(err){
-                                return callback(err);
+                                return console.log(err);
                             }
-                            updategood.save(function(err,good){
+                            updategood.save(function(err){
                                 if(err){
-                                    return callback(err);
+                                    return console.log(err);
                                 }
-                                Attr.delete_all_attr(function(err,nodata){
+                                Attr.delete_all_attr(function(err){
                                     if(err){
-                                        return callback(err);
+                                        return console.log(err);
                                     }
                                     req.flash("success","更新成功");
                                     res.redirect('./?good_name='+goodName);
                                 });
 
                             });
-                        })
+                        });
 
                     });
 
-                })
+                });
 
 
             }
@@ -343,9 +345,9 @@ module.exports=function(app){
     app.post('/editGoodNum',function(req,res){
         var goodName = req.body.goodName;
         var goodCount = parseInt(req.body.goodCount);
-        Good.update(goodName,goodCount,function(err,data){
+        Good.update(goodName,goodCount,function(err){
             if(err){
-                return callback(err);
+                return console.log(err);
             }
             req.flash('success',"修改成功");
             res.redirect('/admin');
@@ -389,4 +391,19 @@ module.exports=function(app){
             error:req.flash('error').toString()
         });
     });
+
+    app.post('/addrule',function(req,res){
+        var ruleDetail = req.body.ruleDetail;
+        var result = ruleDetail.split('&&')[0].split('||');
+        _.times(result.length,function(n){
+//            var newpro = new Promotion(result[n]));
+            console.log(newpro);
+        });
+        console.log(result);
+
+        //得到时间戳
+//        console.log(result[1].slice(5));
+//        var now = moment(result[1].slice(5), "MM/DD/YYYY");
+//        console.log(now.valueOf());
+    })
 };

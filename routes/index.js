@@ -152,7 +152,7 @@ module.exports=function(app){
     });
 
     app.post('/deleted',function(req,res){
-        Good.delete_good(req.body.good_name,function(err,good){
+        Good.delete_good(req.body.goodId,function(err,good){
             if(err){
                 req.flash('error',"删除失败!");
             }
@@ -259,9 +259,9 @@ module.exports=function(app){
     });
 
     app.get('/gooddetail',function(req,res){
-        var goodName = req.query.good_name;
-        console.log("======================="+goodName);
-        Good.get_good_by_name(goodName,function(err,good){
+        var goodId = req.query.goodId;
+        console.log("======================="+goodId);
+        Good.get_good_by_id(goodId,function(err,good){
             if(err){
                 return console.log(err);
             }

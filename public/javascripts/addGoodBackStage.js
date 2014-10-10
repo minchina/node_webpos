@@ -53,10 +53,11 @@ $(".delAttrAdd").on('click',function(){
 $(".remove_good").on('click',function(){
     var THIS =this;
    var good_name = $(this).closest(".good_body").find(".good_name").text();
+   var good_id= $(this).closest(".good_body").find(".good_id").text();
     if(!confirm("确认删除"+good_name+"吗")){
         return 0;
     }
-    $.post('/deleted',{good_name:good_name},function(data){
+    $.post('/deleted',{goodId:good_id},function(data){
         $(THIS).closest(".good_body").remove();
     })
 });

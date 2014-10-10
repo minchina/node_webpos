@@ -48,7 +48,7 @@
                                 <td class="hidden item-barcode"><%= shop.barcode %></td>
                                 <td><%= moment(shop.date).format('MM/DD hh:mm')%></td>
                                 <td>
-                                    <a type="button" class="btn btn-link detail_good" href="/gooddetail/?good_name=<%= shop.name %>">详情</a>
+                                    <a type="button" class="btn btn-link detail_good" href="/gooddetail/?goodId=<%= shop._id %>">详情</a>
                                     <button type="button" class="btn btn-link remove_good" >删除</button>
                                 </td>
                             </tr>

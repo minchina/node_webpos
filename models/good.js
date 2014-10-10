@@ -65,7 +65,7 @@ Good.update=function(good_id,good_num,callback){
     })
 };
 
-Good.delete_good=function(good_name,callback){
+Good.delete_good=function(goodId,callback){
     mongodb.open(function(err,db){
         if(err){
             return callback(err);
@@ -75,7 +75,7 @@ Good.delete_good=function(good_name,callback){
                 mongodb.close();
                 return callback(err);
             }
-            collection.remove({"name":good_name},function(err){
+            collection.remove({_id:ObjectId(goodId)},function(err){
                 mongodb.close();
                 if(err){
                     return callback(err);
@@ -145,7 +145,7 @@ Good.getTen=function(name,page,callback){
     });
 };
 
-Good.get_good_by_name = function(good_name,callback){
+Good.get_good_by_id = function(goodId,callback){
     //打开数据库
     mongodb.open(function(err,db){
         if(err){
@@ -157,7 +157,7 @@ Good.get_good_by_name = function(good_name,callback){
                 mongodb.close();
                 return callback(err);
             }
-            collection.find({name:good_name}).sort({
+            collection.find({_id:ObjectId(goodId)}).sort({
                 _id:1
             }).toArray(function(err,goods){
                 mongodb.close();

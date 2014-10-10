@@ -42,8 +42,32 @@ Good.prototype.save=function(callback){
 
 };
 
+Good.update_property = function(good_id,good_name,good_count,good_unit,good_price,good_attr,callback){
+    mongodb.open(function(err,db){
+        if(err){
+            return callback(err);
+        }
+        db.collection('goods',function(err,collection){
+            if(err){
+                mongodb.close();
+                return callback(err);
+            }
+            collection.update({_id:ObjectId(good_id)},{$set:{name:good_name,
+            count:good_count,uint:good_unit,price:good_price,extre_attr:good_attr
+            }},function(err){
+                if(err){
+                    mongodb.close();
+                    return callback(err);
+                }
+                callback(null);
+            })
+        })
+    })
+
+
+};
+
 Good.update=function(good_id,good_num,callback){
-    console.log(good_id,good_num);
     mongodb.open(function(err,db){
         if(err){
             return callback(err);

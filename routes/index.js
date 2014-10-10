@@ -269,6 +269,7 @@ module.exports=function(app){
                 if(err){
                     return console.log(err);
                 }
+                req.session.good_name = good[0].name;
                 res.render('adminpage/goodDetail',{title:"pos机后台管理",
                     success:req.flash('success').toString(),
                     error:req.flash('error').toString(),
@@ -283,63 +284,41 @@ module.exports=function(app){
     });
 
     app.post('/gooddetail',function(req,res){
+        var goodId = req.query.goodId;
         var goodName = req.body.good_name;
         var goodCount = req.body.good_count;
         var goodUnit = req.body.good_unit;
         var goodPrice =req.body.good_price;
+        console.log(goodId);
 
-        Good.get_good_by_name(goodName,function(err,good){
+        Good.get_good_by_id(goodId,function(err,good){
             if(err){
                 return console.log(err);
             }
-            //说明该商品存在
+            //说明商品存在
             if(good){
-
-                Good.get_good_by_name(goodName,function(err,goodattr){
-                    if(err){
-                        return console.log(err);
-                    }
-                    var good_pro = goodattr[0].extre_attr;
-                    var exter=[];
-                    _.each(good_pro,function(attr){
-                        exter.push({name:attr.name,value:req.body[attr.name]});
+                var tmpproperty = good[0].extre_attr;
+                Attr.get_attr(function(err,propertys){
+                    _.each(propertys,function(property){
+                        tmpproperty.push({name:property.name,value:property.value});
                     });
-                    var updategood = new Good(goodName,goodCount,goodPrice,goodUnit);
-                    updategood.extre_attr = exter;
-                    Attr.get_attr(function(err,attrs){
+                    Good.update_property(goodId,goodName,goodCount,goodUnit,goodPrice,tmpproperty,function(err){
                         if(err){
                             return console.log(err);
                         }
-                        _.each(attrs,function(attr){
-                            updategood.extre_attr.push({name:attr.name,value:attr.value});
-                        });
-                        Good.delete_good(goodName,function(err){
+                        Attr.delete_all_attr(function(err){
                             if(err){
                                 return console.log(err);
                             }
-                            updategood.save(function(err){
-                                if(err){
-                                    return console.log(err);
-                                }
-                                Attr.delete_all_attr(function(err){
-                                    if(err){
-                                        return console.log(err);
-                                    }
-                                    req.flash("success","更新成功");
-                                    res.redirect('./?good_name='+goodName);
-                                });
-
-                            });
+                            req.flash("success","更新成功");
+                            res.redirect('./?goodId='+goodId);
                         });
-
                     });
-
                 });
 
 
             }
-        })
-
+        });
     });
 
     app.post('/editGoodNum',function(req,res){
@@ -356,25 +335,28 @@ module.exports=function(app){
     });
 
     app.get('/addPropertyInDet',function(req,res){
-        var goodName = req.query.good_name;
-        res.render('adminpage/addPropertyInDet',{title:"pos机后台管理系统",
+        var goodId = req.query.goodId;
+        var goodName = req.session.good_name;
+        res.render('adminpage/addPropertyInDet',{
+            title:"pos机后台管理系统",
             success:req.flash('success').toString(),
             error:req.flash('error').toString(),
+            good_id:goodId,
             good_name:goodName
         });
     });
 
     app.post('/addPropertyInDet',function(req,res){
-        var goodName = req.query.good_name;
+        var goodId = req.query.goodId;
         var propertyName = req.body.name;
         var propertyValue = req.body.value;
         var newProperty = new Attr({name:propertyName,value:propertyValue});
-        newProperty.save(function(err,attr){
+        newProperty.save(function(err){
            if(err){
                return callback(err);
            }
            req.flash('success',"添加成功");
-            var url = '/gooddetail'+'?good_name='+goodName;
+            var url = '/gooddetail'+'?goodId='+goodId;
            res.redirect(url);
 
         });

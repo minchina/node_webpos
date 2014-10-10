@@ -248,9 +248,9 @@ module.exports=function(app){
     });
 
     app.post('/addgoodadpage',function(req,res){
-        var goodName = req.body.good_name;
+        var goodId = req.body.good_id;
         var goodNum  = req.body.good_count;
-        Good.update(goodName,goodNum,function(err,data){
+        Good.update(goodId,parseInt(goodNum),function(err){
             if(err){
                 return console.log(err);
             }

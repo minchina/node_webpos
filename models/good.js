@@ -1,5 +1,7 @@
 var mongodb = require('./db');
 var _ = require('underscore');
+var mongoose = require('mongoose');
+var ObjectId = mongoose.Types.ObjectId;
 
 function Good(name,count,price,unit,barcode,type,savecount){
     this.barcode =barcode || null;
@@ -40,7 +42,8 @@ Good.prototype.save=function(callback){
 
 };
 
-Good.update=function(good_name,good_num,callback){
+Good.update=function(good_id,good_num,callback){
+    console.log(good_id,good_num);
     mongodb.open(function(err,db){
         if(err){
             return callback(err);
@@ -50,7 +53,7 @@ Good.update=function(good_name,good_num,callback){
                 mongodb.close();
                 return callback(err);
             }
-            collection.update({"name":good_name},{$set:{count:good_num}},function(err){
+            collection.update({_id:ObjectId(good_id)},{$set:{count:good_num}},function(err){
                 mongodb.close();
                 if(err){
                     return callback(err);

@@ -23,9 +23,9 @@ function attr_check(){
 
 
 $('.item-count').change(function(){
-    var good_count = parseInt($(this).val());
-    var good_name = $(this).closest('.good_body').find('.good_name').text();
-    $.post('/editGoodNum',{goodName:good_name,goodCount:good_count},function(data){
+    var goodNum = parseInt($(this).val());
+    var goodId = $(this).closest('.good_body').find('.good_id').text();
+    $.post('/addgoodadpage',{good_id:goodId,good_count:goodNum},function(data){
 
     })
 });
@@ -79,23 +79,23 @@ $(".minusGood").on('click',function(){
 });
 $('.addgoodadmin').click(function(){
     var THIS=this;
-    var goodName = $(this).closest('.good_body').find('.good_name').text();
+    var goodId = $(this).closest('.good_body').find('.good_id').text();
     var goodNum = $(this).prev().val();
     goodNum = parseInt(goodNum)+1;
-    $.post('/addgoodadpage',{good_name:goodName,good_count:goodNum},function(data){
+    $.post('/addgoodadpage',{good_id:goodId,good_count:goodNum},function(){
         $(THIS).prev().val(goodNum);
     })
 });
 
 $(".minusgoodadmin").click(function(){
     var THIS=this;
-    var goodName = $(this).closest('.good_body').find('.good_name').text();
+    var goodId = $(this).closest('.good_body').find('.good_id').text();
     var goodNum = $(this).next().val();
     if(parseInt(goodNum)==0){
         return false;
     }
     goodNum = parseInt(goodNum)-1;
-    $.post('/addgoodadpage',{good_name:goodName,good_count:goodNum},function(data){
+    $.post('/addgoodadpage',{good_id:goodId,good_count:goodNum},function(){
         $(THIS).next().val(goodNum);
     })
 });

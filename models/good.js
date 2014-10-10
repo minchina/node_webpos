@@ -195,7 +195,7 @@ Good.get_good_by_id = function(goodId,callback){
 };
 
 
-Good.deleted_Attr_by_name = function(good_name,attr_name,callback){
+Good.deleted_Attr_by_id = function(good_id,attr_name,callback){
     //打开数据库
     mongodb.open(function(err,db){
         if(err){
@@ -207,7 +207,7 @@ Good.deleted_Attr_by_name = function(good_name,attr_name,callback){
                 mongodb.close();
                 return callback(err);
             }
-            collection.update({name:good_name},{$pull:{extre_attr:{name:attr_name}}},function(err){
+            collection.update({_id:ObjectId(good_id)},{$pull:{extre_attr:{name:attr_name}}},function(err){
                 mongodb.close();
                 if(err){
                     return callback(err);

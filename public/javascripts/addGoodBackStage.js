@@ -32,12 +32,13 @@ $('.item-count').change(function(){
 
 $(".delAttrDet").on('click',function(){
     var attr_name = $(this).closest('.good_body').find('.attr_name').text();
-    var good_name = $(this).closest('.good_body').find('.hidden').text();
+    var good_id = $(this).closest('.good_body').find('.hidden').text();
+    console.log(good_id);
     if(!confirm("确认要删除该属性吗？")){
         return false;
     }
-    $.post('/delAttr2',{attr_name:attr_name,good_name:good_name},function(data){
-        window.location.assign('/gooddetail/?good_name='+data.good_name);
+    $.post('/delAttr2',{attr_name:attr_name,good_id:good_id},function(data){
+        window.location.assign('/gooddetail/?goodId='+data.good_id);
 
 
     })

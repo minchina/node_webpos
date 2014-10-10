@@ -210,14 +210,16 @@ module.exports=function(app){
     });
 
     app.get('/delAttr2',function(req,res){
-        var good_name = req.query.good_name;
-        Good.get_good_by_name(good_name,function(err,attr){
+        var goodId = req.query.goodId;
+        Good.get_good_by_id(goodId,function(err,attr){
             if(err){
                 return console.log(err);
             }
             res.render('adminpage/deleAttrFromDet',{title:"pos机后台管理系统",
                 attrs:attr[0].extre_attr.reverse(),
-                good_name:good_name
+                good_name:req.session.good_name,
+                good_id : goodId
+
             })
 
         });
@@ -237,13 +239,13 @@ module.exports=function(app){
 
     app.post('/delAttr2',function(req,res){
         var attr_name = req.body.attr_name;
-        var good_name = req.body.good_name;
-        Good.deleted_Attr_by_name(good_name,attr_name,function(err,data){
+        var good_id = req.body.good_id;
+        Good.deleted_Attr_by_id(good_id,attr_name,function(err){
             if(err){
                 return console.log(err);
             }
             req.flash('success',"删除成功");
-            res.json({good_name:good_name})
+            res.json({good_id:good_id})
         })
     });
 

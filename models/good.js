@@ -1,7 +1,9 @@
 var mongodb = require('./db');
 var _ = require('underscore');
-var mongoose = require('mongoose');
-var ObjectId = mongoose.Types.ObjectId;
+// var mongoose = require('mongoose');
+// var ObjectId = mongoose.Types.ObjectId;
+//other method
+var ObjectId = require('mongodb').ObjectID;
 
 function Good(name,count,price,unit,barcode,type,savecount){
     this.barcode =barcode || null;
@@ -10,7 +12,7 @@ function Good(name,count,price,unit,barcode,type,savecount){
     this.unit = unit;
     this.price = price || 0;
     this.count = count || 0;
-    this.savecount = savecount || 0;
+//    this.savecount = savecount || 0;
     this.extre_attr = null;
     this.date = Date.now();
 }
@@ -36,7 +38,6 @@ Good.prototype.save=function(callback){
                 }
                 callback(null,new_good[0]);
             });
-
         });
     });
 
@@ -52,7 +53,7 @@ Good.update_property = function(good_id,good_name,good_count,good_unit,good_pric
                 mongodb.close();
                 return callback(err);
             }
-            collection.update({_id:ObjectId(good_id)},{$set:{name:good_name,
+            collection.update({_id:new ObjectId(good_id)},{$set:{name:good_name,
             count:good_count,uint:good_unit,price:good_price,extre_attr:good_attr
             }},function(err){
                 if(err){
@@ -63,8 +64,6 @@ Good.update_property = function(good_id,good_name,good_count,good_unit,good_pric
             })
         })
     })
-
-
 };
 
 Good.update=function(good_id,good_num,callback){
@@ -77,7 +76,7 @@ Good.update=function(good_id,good_num,callback){
                 mongodb.close();
                 return callback(err);
             }
-            collection.update({_id:ObjectId(good_id)},{$set:{count:good_num}},function(err){
+            collection.update({_id:new ObjectId(good_id)},{$set:{count:good_num}},function(err){
                 mongodb.close();
                 if(err){
                     return callback(err);
@@ -112,31 +111,6 @@ Good.delete_good=function(goodId,callback){
 
 };
 
-Good.get_all_goods = function(callback){
-    //打开数据库
-    mongodb.open(function(err,db){
-        if(err){
-            return callback(err);
-        }
-        //读取goods集合
-        db.collection('goods',function(err,collection){
-            if(err){
-                mongodb.close();
-                return callback(err);
-            }
-            collection.find({}).sort({
-                time:-1
-            }).toArray(function(err,goods){
-                mongodb.close();
-                if(err){
-                    return callback(err);
-                }
-                callback(null,goods);
-            });
-        });
-    });
-};
-
 Good.getTen=function(name,page,callback){
     mongodb.open(function(err,db){
         if(err){
@@ -169,19 +143,21 @@ Good.getTen=function(name,page,callback){
     });
 };
 
-Good.get_good_by_id = function(goodId,callback){
-    //打开数据库
+Good.get_good = function(goodId,callback){
     mongodb.open(function(err,db){
         if(err){
             return callback(err);
         }
-        //读取goods集合
         db.collection('goods',function(err,collection){
             if(err){
                 mongodb.close();
                 return callback(err);
             }
-            collection.find({_id:ObjectId(goodId)}).sort({
+            var query = {};
+            if(goodId){
+                query._id = ObjectId(goodId);
+            }
+            collection.find(query).sort({
                 _id:1
             }).toArray(function(err,goods){
                 mongodb.close();
@@ -190,10 +166,9 @@ Good.get_good_by_id = function(goodId,callback){
                 }
                 callback(null,goods);
             });
-        });
-    });
+        })
+    })
 };
-
 
 Good.deleted_Attr_by_id = function(good_id,attr_name,callback){
     //打开数据库
@@ -207,7 +182,7 @@ Good.deleted_Attr_by_id = function(good_id,attr_name,callback){
                 mongodb.close();
                 return callback(err);
             }
-            collection.update({_id:ObjectId(good_id)},{$pull:{extre_attr:{name:attr_name}}},function(err){
+            collection.update({_id:new ObjectId(good_id)},{$pull:{extre_attr:{name:attr_name}}},function(err){
                 mongodb.close();
                 if(err){
                     return callback(err);
@@ -244,8 +219,6 @@ Good.get_promotions = function(callback){
 };
 
 Good.get_savecount = function(count,name,barcodes){
-    console.log(name);
-    console.log(barcodes);
     if(_.find(barcodes,function(message){return message.name == name})){
         console.log(Math.floor(count/3));
         return Math.floor(count/3);

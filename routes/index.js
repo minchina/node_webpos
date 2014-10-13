@@ -1,6 +1,7 @@
 var Good = require('../models/good');
 var _ = require('underscore');
 var Attr = require('../models/attr');
+var Discount = require('../models/discount');
 var moment = require('moment');
 var Promotion = require('../models/promotion');
 /*
@@ -23,7 +24,7 @@ module.exports=function(app){
     });
 
     app.get('/item',function(req,res){
-        Good.get_all_goods(function(err,goods){
+        Good.get_good(null,function(err,goods){
             if(!req.session.item){
                 req.session.item=goods;
             }
@@ -211,7 +212,7 @@ module.exports=function(app){
 
     app.get('/delAttr2',function(req,res){
         var goodId = req.query.goodId;
-        Good.get_good_by_id(goodId,function(err,attr){
+        Good.get_good(goodId,function(err,attr){
             if(err){
                 return console.log(err);
             }
@@ -263,7 +264,7 @@ module.exports=function(app){
     app.get('/gooddetail',function(req,res){
         var goodId = req.query.goodId;
         console.log("======================="+goodId);
-        Good.get_good_by_id(goodId,function(err,good){
+        Good.get_good(goodId,function(err,good){
             if(err){
                 return console.log(err);
             }
@@ -293,7 +294,7 @@ module.exports=function(app){
         var goodPrice =req.body.good_price;
         console.log(goodId);
 
-        Good.get_good_by_id(goodId,function(err,good){
+        Good.get_good(goodId,function(err,good){
             if(err){
                 return console.log(err);
             }
@@ -377,17 +378,30 @@ module.exports=function(app){
     });
 
     app.post('/addrule',function(req,res){
-        var ruleDetail = req.body.ruleDetail;
-        var result = ruleDetail.split('&&')[0].split('||');
-        _.times(result.length,function(n){
-//            var newpro = new Promotion(result[n]));
-            console.log(newpro);
+        var ruleDetail = req.body.ruleDetail.replace(/[\s"']/g,'');
+        //得到需要优惠商品的截至时间
+        var indexofcompare= ruleDetail.indexOf('day');
+        var time_condition = moment(ruleDetail.slice(indexofcompare+4),"MM/DD/YYYY").valueOf();
+        console.log(time_condition);
+        //得到时间前后限制
+        var maxmin = ruleDetail.slice(indexofcompare+3,indexofcompare+4);
+        console.log(maxmin);
+        //得到需要优惠商品的名字
+        var nameInfo = ruleDetail.split("&&")[0];
+        nameInfo=nameInfo.split("||");
+        var namearray = [];
+        _.each(nameInfo,function(body){
+            namearray.push({name:body.slice(6)});
         });
-        console.log(result);
-
-        //得到时间戳
-//        console.log(result[1].slice(5));
-//        var now = moment(result[1].slice(5), "MM/DD/YYYY");
-//        console.log(now.valueOf());
+        var new_discount = new Discount(time_condition);
+        new_discount.name = namearray;
+        new_discount.save(function(err){
+            if(err)
+            {
+                return console.log(err);
+            }
+        });
+        console.log(new_discount);
+        console.log(namearray);//商品名字对象数组namearray
     })
 };

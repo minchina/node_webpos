@@ -94,7 +94,7 @@ Good.delete_good=function(goodId,callback){
             return callback(err);
         }
         db.collection('goods',function(err,collection){
-            if(err){
+            if(err){    
                 mongodb.close();
                 return callback(err);
             }

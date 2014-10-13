@@ -4,6 +4,7 @@ var Attr = require('../models/attr');
 var Discount = require('../models/discount');
 var moment = require('moment');
 var Promotion = require('../models/promotion');
+var Select = require('../models/select');
 /*
  * GET home page.
  */
@@ -384,29 +385,32 @@ module.exports=function(app){
 
     app.post('/addrule',function(req,res){
         var ruleDetail = req.body.ruleDetail.replace(/[\s"']/g,'');
-        //得到需要优惠商品的截至时间
+        //得到需要优惠商品的截至时间time_condition
         var indexofcompare= ruleDetail.indexOf('day');
         var time_condition = moment(ruleDetail.slice(indexofcompare+4),"MM/DD/YYYY").valueOf();
-        console.log(time_condition);
-        //得到时间前后限制
+        //得到时间前后限制maxmin < > =
         var maxmin = ruleDetail.slice(indexofcompare+3,indexofcompare+4);
-        console.log(maxmin);
         //得到需要优惠商品的名字
         var nameInfo = ruleDetail.split("&&")[0];
         nameInfo=nameInfo.split("||");
         var namearray = [];
         _.each(nameInfo,function(body){
-            namearray.push({name:body.slice(6)});
+            namearray.push({name:body.slice(6),day:time_condition});
         });
-        var new_discount = new Discount(time_condition);
-        new_discount.name = namearray;
-        new_discount.save(function(err){
-            if(err)
-            {
-                return console.log(err);
-            }
-        });
-        console.log(new_discount);
-        console.log(namearray);//商品名字对象数组namearray
+        //得到打折期限
+        var starttime = moment(req.body.starttime,"MM/DD/YYYY").valueOf();
+        var endtime = moment(req.body.endtime,"MM/DD/YYYY").valueOf();
+        var buy = parseInt(req.body.buy);
+        var discount = parseInt(req.body.discount);
+        var newrule = new Select(null,starttime,endtime,buy,discount);
+        console.log(newrule);
+//        Discount.saveDiscountArray(namearray,function(err){
+//            if(err){
+//                return console.log(err)
+//            }
+//            req.flash('success',"保存成功!");
+//            res.redirect('/addpromotion');
+//        })
+
     })
 };

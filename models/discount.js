@@ -1,8 +1,5 @@
 var mongodb = require('./db');
 var _ = require('underscore');
-// var mongoose = require('mongoose');
-// var ObjectId = mongoose.Types.ObjectId;
-//other method
 var ObjectId = require('mongodb').ObjectID;
 
 function Discount(day){
@@ -34,18 +31,23 @@ Discount.prototype.save=function(callback){
     });
 };
 
-Discount.get_discount_good=function(name,day,callback){
+Discount.saveDiscountArray=function(arrObj,callback){
     mongodb.open(function(err,db){
         if(err){
             return callback(err);
         }
-        db.collection('goods',function(err,collection){
+        db.collection('select_good',function(err,collection){
             if(err){
                 mongodb.close();
                 return callback(err);
             }
-            collection.find({"$or": [{"name":{"$in":["stephen","stephen1"]}}, {"age":36}]})
-            collection.find({"$":[,]})
+            collection.insert(arrObj,{safe:true},function(err,arrObj){
+                mongodb.close();
+                if(err){
+                    return callback(err);
+                }
+                callback(null,arrObj);
+            })
         })
     })
 

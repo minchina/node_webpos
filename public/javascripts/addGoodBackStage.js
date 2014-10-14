@@ -66,7 +66,10 @@ $(".remove_good").on('click',function(){
 $(".addGood").on('click',function(){
     var item = $("#countGood");
     var count = parseInt(item.val())+1;
+    var good_id = $("#good_id").text();
     item.val(count);
+    $.post('/addgoodadpage',{good_id:good_id,good_count:count},function(){
+    })
 
 
 });
@@ -78,7 +81,13 @@ $(".minusGood").on('click',function(){
     }
     var count = parseInt(item.val())-1;
     item.val(count);
+    var good_id = $("#good_id").text();
+    $.post('/addgoodadpage',{good_id:good_id,good_count:count},function(){
+    })
+
 });
+
+
 $('.addgoodadmin').click(function(){
     var THIS=this;
     var goodId = $(this).closest('.good_body').find('.good_id').text();

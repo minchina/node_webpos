@@ -397,13 +397,14 @@ module.exports=function(app){
         _.each(nameInfo,function(body){
             namearray.push({name:body.slice(6),day:time_condition});
         });
-        //得到打折期限
+        //得到打折期限等具体优惠信息
         var starttime = moment(req.body.starttime,"MM/DD/YYYY").valueOf();
         var endtime = moment(req.body.endtime,"MM/DD/YYYY").valueOf();
         var buy = parseInt(req.body.buy);
         var discount = parseInt(req.body.discount);
+        //新建select对象,将good和规则联系起来
         var newrule = new Select(null,starttime,endtime,buy,discount);
-        console.log(newrule);
+        newrule.save();
 //        Discount.saveDiscountArray(namearray,function(err){
 //            if(err){
 //                return console.log(err)

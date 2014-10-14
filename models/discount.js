@@ -31,6 +31,34 @@ Discount.prototype.save=function(callback){
     });
 };
 
+Discount.get=function(id,callback){
+    mongodb.open(function(err,db){
+        if(err){
+            return callback(err);
+        }
+        db.collection('select_good',function(err,collection){
+            if(err){
+                mongodb.close();
+                return callback(err);
+            }
+            var query = {};
+            if(id){
+                query._id = ObjectId(id);
+            }
+            collection.find(query).sort({
+                _id:1
+            }).toArray(function(err,goods){
+                mongodb.close();
+                if(err){
+                    return callback(err);
+                }
+                callback(null,goods);
+            });
+        })
+    })
+
+};
+
 Discount.saveDiscountArray=function(arrObj,callback){
     mongodb.open(function(err,db){
         if(err){

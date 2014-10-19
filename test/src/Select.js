@@ -7,22 +7,46 @@ function Select(goodItems, ruleDetail) {
 
 
 function dealrules(goodItems, ruleDetail) {
-    var indexflag = ruleDetail.search(/[||{1}&&]/g);
-    var thisrule = ruleDetail.slice(0, indexflag);
-    var leftrule = ruleDetail.slice(indexflag);
-    getGoodByRule(goodItems, getValueMap(thisrule));
-    console.info("============");
+    var indexflag = getIndexFlag(ruleDetail);
+    var leftrule = getLeftRule(indexflag,ruleDetail);
+    var select_good = getGoodByRule(goodItems,ruleProcess(ruleDetail) );
+    console.info(select_good);
+
+
     var next_sign = nextsign(leftrule);
     if(next_sign=="or"){
-        leftrule = removesign(leftrule);
-        getGoodByRule(goodItems, leftrule);
+        select_good= getGoodByRule(goodItems,ruleProcess(leftrule));
+        console.info(select_good);
+    }
+    if(next_sign=="and"){
+
     }
 
 
 }
 
-function getThisValue(){
 
+function ruleProcess (ruleDetail){
+    if(ruleDetail.search(/[^|&]/g)){
+        ruleDetail = removesign(ruleDetail);
+    }
+    return getValueMap(getThisRule(getIndexFlag(ruleDetail),ruleDetail))
+
+}
+
+function getThisRule(indexflag,ruleDetail){
+
+    return ruleDetail.slice(0, indexflag);
+
+}
+
+function getIndexFlag(ruleDetail){
+//    console.info(ruleDetail.search(/[||{1}&&]/g));
+    return ruleDetail.search(/[||{1}&&]/g);
+}
+
+function getLeftRule(indexflag,ruleDetail){
+    return  ruleDetail.slice(indexflag);
 }
 
 function removesign (leftrule){

@@ -11,8 +11,8 @@ describe('Select', function () {
             }
 
         ];
-        dis_rule1 = "(name=='苹果' || name=='草莓') && day<123 && count<100";
-        dis_rule2 = "(name=='苹果' || name=='草莓')";
+        dis_rule1 = "(name=='荔枝' || name=='草莓') && day<123 && count<100";
+        dis_rule2 = "(name=='荔枝' || name=='草莓')";
 
     });
 

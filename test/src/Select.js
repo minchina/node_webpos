@@ -101,9 +101,10 @@ function isKuoHao(rules) {
 //得到商品通过规则
 function getGoodByRule(goodItems, thisrule) {
     var property = thisrule.name;
-    var value = parseInt(thisrule.value.replace(/[']/g,''));
+    var value = formatValue(thisrule.value.replace(/[']/g,''));
     var sign = thisrule.sign[0];
-    console.info(property,value,sign);
+    
+    console.info(property,typeof value,sign);
     var good= _.find(goodItems, function (item) {
         if(sign=="="){
             console.info(1);
@@ -119,6 +120,14 @@ function getGoodByRule(goodItems, thisrule) {
     saveGood(good);
     return good;
 
+}
+
+function formatValue(value){
+    console.info(value);
+    if(!value.search(/[0-9]/g)){
+        return parseInt(value);
+    }
+    return value;
 }
 
 function saveGood (good){

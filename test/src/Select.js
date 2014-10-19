@@ -7,13 +7,11 @@ function Select(goodItems, ruleDetail) {
 
 
 function dealrules(goodItems, ruleDetail) {
-    var result = ruleProcess(ruleDetail);
+    var result = getGoodByRule(goodItems,ruleProcess(ruleDetail));
     console.info(result);
 
-//    result = ruleProcess(getLeftRule(getIndexFlag(ruleDetail),ruleDetail));
-//    console.info(result);
-
-
+    result = ruleProcess(getLeftRule(getIndexFlag(ruleDetail),ruleDetail));
+    console.info(result);
 
 //    result = ruleProcess(ruleDetail);
 //    console.info(result);
@@ -45,15 +43,18 @@ function ruleProcess (ruleDetail){
 
 }
 
-
-
 function getIndexFlag(ruleDetail){
+    if(ruleDetail.search(/[(.*?)&&|(.*?)||]/g)==-1){
+        return 0;
+    }
     return ruleDetail.search(/[(.*?)&&|(.*?)||]/g);
 }
 function getThisRule(indexflag,ruleDetail){
+    if(indexflag==0){
+        return ruleDetail;
+    }
     return ruleDetail.slice(0, indexflag);
 }
-
 
 function getLeftRule(indexflag,ruleDetail){
     return  ruleDetail.slice(indexflag);
@@ -91,17 +92,29 @@ function getValueMap(thisrule) {
     }
     return {name: key, value: value, sign: sign}
 }
-//去掉括号
 
+//第一步，去掉括号
 function isKuoHao(rules) {
     return rules.replace(/[() ]/g, '')
 }
 
+//得到商品通过规则
 function getGoodByRule(goodItems, thisrule) {
     var property = thisrule.name;
-    var value = thisrule.value.replace(/[']/g,'');
+    var value = parseInt(thisrule.value.replace(/[']/g,''));
+    var sign = thisrule.sign[0];
+    console.info(property,value,sign);
     var good= _.find(goodItems, function (item) {
-        return item[property] == value;
+        if(sign=="="){
+            console.info(1);
+            return item[property] == value;
+        }else if(sign==">"){
+            console.info(2);
+            return item[property] > value;
+        }else {
+            console.info(3);
+            return item[property] < value;
+        }
     });
     saveGood(good);
     return good;

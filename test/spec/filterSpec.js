@@ -3,6 +3,7 @@ describe('Select', function () {
     var dis_rule1;
     var dis_rule2;
     var dis_rule3;
+    var dis_rule4;
     beforeEach(function () {
         inputs = [
             {name: "苹果", count: 12, uint: "斤", price: 3.5, date: 12},
@@ -11,9 +12,10 @@ describe('Select', function () {
             }
 
         ];
-        dis_rule1 = "(name=='荔枝' || name=='草莓') && day<123 && count<100" ;
-        dis_rule2 = "(name=='荔枝' || name=='草莓')";
+        dis_rule1 = "(name=='荔枝' || name=='草莓') && date==12 && count<100 && unit=='斤'" ;
+        dis_rule2 = "(name=='荔枝' || name=='草莓' || name=='苹果')";
         dis_rule3 = "date<123";
+        dis_rule4 = "date==12";
 
     });
 
@@ -21,7 +23,7 @@ describe('Select', function () {
 
         spyOn(console, 'log');
 
-        Select(inputs, dis_rule3);
+        Select(inputs, dis_rule1);
 //        Select.output();
         expect(console.log).toHaveBeenCalledWith('hh');
     })

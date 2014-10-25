@@ -1,30 +1,21 @@
-
-var flagGlobal="";
 function Select(goodItems, ruleDetail) {
-    console.info(goodItems);
-    localStorage["items"] = JSON.stringify(goodItems);
+    ruleDetail = ruleDetail.replace(/[() /s]/g,"");
+    console.log(ruleDetail);
+    dealrules(goodItems,ruleDetail,"or");
 
-    var reuslt = isKuoHao(ruleDetail);
-    dealrules(goodItems, reuslt,"or");
 }
 
 
 function dealrules(goodItems, ruleDetail,sign) {
-    console.info(getValueMap(getThisRule(ruleDetail)));
-    console.info(getValueMap(getThisRule(getLeftRule(ruleDetail))));
-    console.info(getValueMap(getThisRule(getLeftRule(getLeftRule(ruleDetail)))));
-    console.info(getValueMap(getThisRule(getLeftRule(getLeftRule(getLeftRule(ruleDetail))))));
-    console.info(getValueMap(getThisRule(getLeftRule(getLeftRule(getLeftRule(getLeftRule(ruleDetail)))))));
+
+    ruleProcess(goodItems,ruleDetail);
 }
 
 function ruleProcess (goodItems,ruleDetail){
-    if(ruleDetail.search(/[^|&]/g)){
-        ruleDetail = removesign(ruleDetail);
-//        console.info(ruleDetail);
-    }
-//    return getGoodByRule(goodItems,getValueMap(getThisRule(getIndexFlag(ruleDetail),ruleDetail)));
-
+    console.log(getGoodByRule(goodItems,ruleDetail));
 }
+
+
 
 function getIndexFlag(ruleDetail){
     if(ruleDetail.search(/[(.*?)&&|(.*?)||]/g)==-1){
@@ -33,7 +24,7 @@ function getIndexFlag(ruleDetail){
     return ruleDetail.search(/[(.*?)&&|(.*?)||]/g);
 }
 function getThisRule(ruleDetail){
-    var indexflag = getIndexFlag(removesign(ruleDetail));
+    var indexflag = getIndexFlag(ruleDetail);
     if(indexflag==0){
         return ruleDetail.slice(2);
     }
@@ -44,7 +35,7 @@ function getThisRule(ruleDetail){
 }
 
 function getLeftRule(ruleDetail){
-    return  removesign(ruleDetail.slice(getIndexFlag(ruleDetail)));
+    return ruleDetail.slice(getIndexFlag(ruleDetail));
 }
 
 function removesign (leftrule){
@@ -56,27 +47,25 @@ function removesign (leftrule){
 
 }
 
-
-
-
-//function nextsign (leferules){
-//    var flag = leferules.search(/[||{1}&&]/g);
-//    if(!flag){
-//        flagGlobal= "or";
-//    }
-//    flagGlobal = "and";
-//}
+function nextsign (leferules){
+    var flagor = leferules.search(/[||{1}]/g);
+    var flagand = leferules.search(/[&&{1}]/g);
+    if(!flagor){
+        return "or";
+    }
+    if(!flagand){
+        return "and";
+    }
+}
 
 //将一条规则组合成一个数组
 function getValueMap(thisrule) {
-//    console.info(thisrule);
     var key = "";
     var value = "";
     var index = thisrule.search(/[==><]/g);
     var sign = thisrule.match(/[=><]/g);
 //    console.info(sign);
     if (sign[0] == "=") {
-        console.info("==");
         index = index + 1;
         key = thisrule.slice(0, index - 1);
         value = thisrule.slice(index + 1);
@@ -94,39 +83,93 @@ function isKuoHao(rules) {
 }
 
 //得到商品通过规则
-function getGoodByRule(goodItems, thisrule) {
-    console.info(thisrule);
+function getGoodByRule(goodItems, ruletotal) {
+    var thisrule = getThisRule(ruletotal);
+
+    var leftrule = removesign(getLeftRule(ruletotal));
+//    if(thisrule.length==1){
+//        return 1;
+//    }
+    thisrule = getValueMap(thisrule);
+//    console.log(thisrule);
     var property = thisrule.name;
     var value = formatValue(thisrule.value.replace(/[']/g,''));
+//    console.log(value);
     var sign = thisrule.sign[0];
 
 //    console.info(property,typeof value,sign);
     var good= _.find(goodItems, function (item) {
         if(sign=="="){
-//            console.info(1);
             return item[property] == value;
         }else if(sign==">"){
-//            console.info(2);
             return item[property] > value;
         }else {
-//            console.info(3);
             return item[property] < value;
         }
     });
-    saveGood(good);
-    return good;
+//    console.log(good);
+    if(getflag()=="or" || getflag()=="no"){
+        var result =getLastGood();
+        result.push(good);
+        saveLastGood(result);
+    }
+    if(getflag()=="and"){
+        goodItems = getLastGood();
+        saveflag(nextsign(getLeftRule(ruletotal)));
+        return getGoodByRule(goodItems,leftrule);
+    }
+    if(thisrule.length==1){
+        return 1;
+    }
+    saveThisGood(good);
+    saveflag(nextsign(getLeftRule(ruletotal)));
+
+    return getGoodByRule(goodItems,leftrule);
 }
 
 function formatValue(value){
-//    console.info(value);
     if(!value.search(/[0-9]/g)){
         return parseInt(value);
     }
     return value;
 }
 
-function saveGood (good){
-    localStorage.setItem('item',good);
+function saveThisGood (good){
+    localStorage["thistime"]=JSON.stringify(good);
 }
+
+function saveLastGood (good){
+    localStorage["lasttime"]=JSON.stringify(good);
+}
+
+function getThisGood(){
+    if(!localStorage['thistime']){
+        localStorage['thistime']=JSON.stringify([]);
+    }
+    return JSON.parse(localStorage["thistime"]);
+}
+
+function getLastGood(){
+    if(!localStorage['lasttime']){
+        localStorage['lasttime']=JSON.stringify([]);
+    }
+    return JSON.parse(localStorage["lasttime"]);
+}
+
+function saveflag(flag){
+    localStorage.setItem("flag",flag);
+}
+
+function getflag(){
+    if(!localStorage['flag']){
+        localStorage.setItem("flag","no");
+    }
+    return localStorage.getItem("flag");
+}
+
+function savefinally (good){
+    localStorage["finally"]=JSON.stringify(good);
+}
+
 
 

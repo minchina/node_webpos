@@ -42,7 +42,7 @@ RulerFilter.filter_process=function(good_items,rule,symbol_stack,result_stack){
             /////////////////////////////////// 做到这里了////////////////////////////
             console.log(result_stack);
             var symbol = symbol_stack.pop();//这里还需要判断符号栈里面的符号，是|还是&，然后再计算。
-            result_stack.push(RulerFilter.or_compute(result_stack.pop(),result_stack.pop()));
+            result_stack.push(RulerFilter.and_compute(result_stack.pop(),result_stack.pop()));
             console.log(result_stack);
             /////////////////////////////////////
         }else{//单个单元
@@ -84,8 +84,8 @@ RulerFilter.get_good_by_unit_rule=function(gooditems,unit){
     });
 };
 
-RulerFilter.and_compute = function(){
-
+RulerFilter.and_compute = function(list1,list2){
+    return _.intersection(list1,list2);
 };
 
 RulerFilter.or_compute = function(list1,list2){

@@ -63,16 +63,6 @@ function Filter_Process(gooditems, rule) {//主逻辑
             }
         }
     }
-    //理论上前面的计算之后，不会计算最后一个!
-    //if(symbol_stack.length!=0){
-    //    symbol = symbol_stack.pop();
-    //    if(symbol=="&"){
-    //        result_stack.push(and_compute(result_stack.pop(),result_stack.pop()));
-    //    }
-    //    if(symbol=="|"){
-    //        result_stack.push(or_compute(result_stack.pop(),result_stack.pop()));
-    //    }
-    //}
     return result_stack[0];
 }
 

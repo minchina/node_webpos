@@ -42,3 +42,41 @@ RulerFilter.get_good_by_unit_rule=function(gooditems,unit){
         }
     });
 };
+
+function icp(symbol) {
+    switch (symbol) {
+        case ')' :
+            return 1;
+            break;
+        case '|' :
+            return 2;
+            break;
+        case '&' :
+            return 4;
+            break;
+        case '(' :
+            return 8;
+            break;
+        default :
+            return 0;
+    }
+}
+
+function isp(symbol) {
+    switch (symbol) {
+        case '(' :
+            return 1;
+            break;
+        case '|' :
+            return 3;
+            break;
+        case '&' :
+            return 5;
+            break;
+        case ')' :
+            return 8;
+            break;
+        default :
+            return 0;
+    }
+}

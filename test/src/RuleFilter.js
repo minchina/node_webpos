@@ -116,53 +116,13 @@ function get_top_of_symbol(symbol_stack) {
     return symbol_stack[symbol_stack.length - 1];
 
 }
+RulerFilter.and_compute = function(list1,list2){
+    return _.intersection(list1,list2);
+};
 
-function and_compute(list1, list2) {
-    var computed_list = [];
-    for (var i = 0; i < list1.length; i++) {
-        for (var j = 0; j < list2.length; j++) {
-            if (product_equals(list1[i], list2[j])) {
-                computed_list.push(list2[j]);
-            }
-        }
-    }
-    return computed_list;
-}
-
-function or_compute(list1, list2) {
-    var temp_list = list1;
-    for (var i = 0; i < list2.length; i++) {
-        if (!is_product_in_list(list1, list2[i])) {
-            temp_list.push(list2[i]);
-        }
-    }
-    return temp_list;
-}
-
-function is_product_in_list(list, product) {
-    for (var i = 0; i < list.length; i++) {
-        if (product_equals(list[i], product)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function product_equals(product1, product2) {
-    if (product1.properties.length != product2.properties.length) {
-        return false;
-    }
-    else {
-        for (var i = 0; i < product1.properties.length; i++) {
-            if (product1.properties[i].property_name != product2.properties[i].property_name
-                || product1.properties[i].property_value != product2.properties[i].property_value
-                ) {
-                return false;
-            }
-        }
-    }
-    return true;
-}
+RulerFilter.or_compute = function(list1,list2){
+    return _.union(list1,list2)
+};
 
 
 function icp(symbol) {

@@ -39,7 +39,6 @@ describe('unit rule should filter correct goods', function () {
     it("name='苹果' && count ==20 should filter good_items first",function(){
         var rule = "name='苹果' && count ==20";
         var result = RulerFilter.filter(good_items,rule);
-        console.log(result);
         expect(result.length).toBe(1);
         expect(result[0]).toBe(good_items[1]);
     });
@@ -48,5 +47,25 @@ describe('unit rule should filter correct goods', function () {
         var rule = "name='苹果'|| type=='电子产品'";
         var result = RulerFilter.filter(good_items,rule);
         expect(result.length).toBe(4);
+    });
+
+    it("name=='苹果' && count ==20 || type =='电子产品' should filter 3 goods ",function(){
+        var rule = "name='苹果' && count ==20 || type =='电子产品'";
+        var result = RulerFilter.filter(good_items,rule);
+        expect(result.length).toBe(3);
+    });
+    it("name=='苹果 && count==20 && type=='水果'",function(){
+        var rule = "name=='苹果 && count==20 && type=='水果'";
+        var result = RulerFilter.filter(good_items,rule);
+        expect(result.length).toBe(1);
+        expect(result[0]).toBe(good_items[1]);
+    });
+
+    it("name=='苹果 || name=草莓 || type=='电子产品'",function(){
+        var rule = "name=='苹果 || name=草莓 || type=='电子产品'";
+        var result = RulerFilter.filter(good_items,rule);
+        expect(result.length).toBe(5);
+        expect(result[0]).toBe(good_items[4]);
     })
+
 });

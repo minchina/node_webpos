@@ -42,7 +42,12 @@ RulerFilter.filter_process=function(good_items,rule,symbol_stack,result_stack){
             /////////////////////////////////// 做到这里了////////////////////////////
             console.log(result_stack);
             var symbol = symbol_stack.pop();//这里还需要判断符号栈里面的符号，是|还是&，然后再计算。
-            result_stack.push(RulerFilter.and_compute(result_stack.pop(),result_stack.pop()));
+            if(symbol=="&"){
+                result_stack.push(RulerFilter.and_compute(result_stack.pop(),result_stack.pop()));
+            }
+            if(symbol=="|"){
+                result_stack.push(RulerFilter.or_compute(result_stack.pop(),result_stack.pop()));
+            }
             console.log(result_stack);
             /////////////////////////////////////
         }else{//单个单元

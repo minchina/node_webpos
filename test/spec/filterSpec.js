@@ -36,4 +36,17 @@ describe('unit rule should filter correct goods', function () {
         expect(RulerFilter.filter(good_items,rule)[1]).toBe(good_items[4]);
         expect(RulerFilter.filter(good_items,rule)[2]).toBe(good_items[5]);
     });
+    it("name='苹果' && count ==20 should filter good_items first",function(){
+        var rule = "name='苹果' && count ==20";
+        var result = RulerFilter.filter(good_items,rule);
+        console.log(result);
+        expect(result.length).toBe(1);
+        expect(result[0]).toBe(good_items[1]);
+    });
+
+    it("name='苹果'|| type=='电子产品' should filter array which have 4 elements",function(){
+        var rule = "name='苹果'|| type=='电子产品'";
+        var result = RulerFilter.filter(good_items,rule);
+        expect(result.length).toBe(4);
+    })
 });

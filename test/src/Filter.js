@@ -21,13 +21,30 @@ RulerFilter.filter_process=function(good_items,rule,symbol_stack,result_stack){
             var map = RulerFilter.get_value_map(unit);
             result_stack.push(RulerFilter.get_good_by_unit_rule(good_items,map));
             rule = rule.slice(index.index);
+            console.log(result_stack,rule);
             return RulerFilter.filter_process(good_items,rule,symbol_stack,result_stack);
             //以|&开头，肯定不是第一次进入该函数
         }else if(rule.match(/[|&]/).index ==0){
             console.log(4);
             //将该符号压入结果栈
-            symbol_stack.push(rule.slice(0,1));
+            var symbol = rule.slice(0,1);
+            console.log(symbol);
+            //如果栈外优先级高于栈内优先级，则将栈外元素压入符号栈
+            if(icp(symbol)>isp(RulerFilter.get_top_of_symbol(symbol_stack))){
+                symbol_stack.push(symbol);
+            }else{//把符号栈内的符号弹出来进行计算
+                var compute_symbol = symbol_stack.pop();
+                if(compute_symbol=="&"){
+                    result_stack.push(RulerFilter.and_compute(result_stack.pop(),result_stack.pop()));
+                }
+                if(compute_symbol=="|"){
+                    result_stack.push(RulerFilter.or_compute(result_stack.pop(),result_stack.pop()));
+                }
+            }
             rule = rule.slice(1);
+            //弹出符号之后，还需要将新的符号压入
+            symbol_stack.push(symbol);
+            console.log(symbol_stack,result_stack,rule);
             return RulerFilter.filter_process(good_items,rule,symbol_stack,result_stack);
         }
     }
@@ -39,7 +56,6 @@ RulerFilter.filter_process=function(good_items,rule,symbol_stack,result_stack){
             var map =  RulerFilter.get_value_map(rule);
             result_stack.push(RulerFilter.get_good_by_unit_rule(good_items,map));
             //先将最后一个unit计算出来,然后将栈顶符号弹出来，和结果栈中结合计算
-            /////////////////////////////////// 做到这里了////////////////////////////
             console.log(result_stack);
             var symbol = symbol_stack.pop();//这里还需要判断符号栈里面的符号，是|还是&，然后再计算。
             if(symbol=="&"){
@@ -50,7 +66,7 @@ RulerFilter.filter_process=function(good_items,rule,symbol_stack,result_stack){
             }
             console.log(result_stack);
             /////////////////////////////////////
-        }else{//单个单元
+        }else{//单个单元或者是已经计算到最后一个了
             console.log(result_stack);
             unit = rule;
             map = RulerFilter.get_value_map(unit);

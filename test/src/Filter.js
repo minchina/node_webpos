@@ -40,7 +40,7 @@ RulerFilter.filter_process=function(good_items,rule,symbol_stack,result_stack){
             return RulerFilter.filter_process(good_items,rule,symbol_stack,result_stack);
         }
     }
-    //当规则中不包含|&的时候
+    //当规则中不包含|&的时候,可以理解为只剩下一个rule unit了
     if(rule.indexOf("|") ==-1 || rule.indexOf("&")==-1){
         //符号栈中有符号，说明不是单个unit
         if(symbol_stack.length!=0){

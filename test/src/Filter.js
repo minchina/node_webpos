@@ -64,6 +64,27 @@ RulerFilter.filter_process=function(good_items,rule,symbol_stack,result_stack){
     return result_stack[0];
 };
 
+
+RulerFilter.parse=function(s,list){
+    var fri=0;
+    var end=0;
+    if((fri=s.lastIndexOf("("))!=-1)
+    {
+        for(var i=fri;i<s.length;i++)
+        {
+            if(s.charAt(i)==')')
+            {
+                end=i;
+                var  str=s.substring(fri+1,end);
+                var  turnstr=s.substring(0, fri)+"$"+list.length+s.substring(end+1, s.length);
+                list.push(str);
+                return RulerFilter.parse(turnstr,list);
+            }
+        }
+    }
+    return {rule:s,list:list};
+};
+
 RulerFilter.remove_no_use_symbal = function(rule){
     rule = rule.replace(/['\s+]/g, "");
     rule = rule.replace(/[&]{2}/g, "&");

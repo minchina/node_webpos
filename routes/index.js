@@ -273,20 +273,12 @@ module.exports=function(app){
             if(err){
                 return console.log(err);
             }
-            Attr.get_attr(function(err,attr){
-                if(err){
-                    return console.log(err);
-                }
-                req.session.good_name = good[0].name;
-                res.render('adminpage/goodDetail',{title:"pos机后台管理",
-                    success:req.flash('success').toString(),
-                    error:req.flash('error').toString(),
-                    good:good[0],
-                    new_attr:attr
-
+            req.session.good_name = good[0].name;
+            res.render('adminpage/goodDetail',{title:"pos机后台管理",
+                success:req.flash('success').toString(),
+                error:req.flash('error').toString(),
+                good:good[0]
             });
-
-            })
         });
 
     });

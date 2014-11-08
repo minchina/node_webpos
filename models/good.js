@@ -40,6 +40,28 @@ Good.prototype.save=function(callback){
     });
 
 };
+
+Good.save=function(new_good,callback){
+    mongodb.open(function(err,db){
+        if(err){
+            return callback(err);
+        }
+        db.collection('goods',function(err,collection){
+            if(err){
+                mongodb.close();
+                return callback(err);
+            }
+            collection.insert(new_good,{safe:true},function(err,new_good){
+                mongodb.close();
+                if(err){
+                    return callback(err);
+                }
+                callback(null,new_good[0]);
+            });
+        });
+    });
+
+};
 Good.update_property = function(good_id,goodobject,callback){
     mongodb.open(function(err,db){
         if(err){

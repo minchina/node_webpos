@@ -30,14 +30,14 @@
                                 商品名称：
                             </td>
                             <td>
-                                <input type="text"  name="good_name" placeholder="请输入商品名称" size="20" required="required">
+                                <input type="text"  name="name" placeholder="请输入商品名称" size="20" required="required">
                             </td>
                             <td>
                                 商品数量：</td>
                             <td>
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default minusGood">-</button>
-                                    <input type="text" class="btn btn-default" id="countGood" name="good_count" value="0" size="2" required="required">
+                                    <input type="text" class="btn btn-default" id="countGood" name="count" value="0" size="2" required="required">
                                     <button type="button" class="btn btn-default addGood">+</button>
                                 </div>
                             </td>
@@ -46,12 +46,12 @@
                             <td>
                                 单价（元）：</td>
                             <td>
-                                <input type="text"  name="good_price" placeholder="请输入单价" size="20" required="required">
+                                <input type="text"  name="price" placeholder="请输入单价" size="20" required="required">
                             </td>
                             <td>
                                 单位：</td>
                             <td>
-                                <input type="text" name="good_unit" placeholder="请输入单位" size="20" required="required">
+                                <input type="text" name="unit" placeholder="请输入单位" size="20" required="required">
                             </td>
                         </tr>
                         <%attrs.forEach(function(attr,index){%>

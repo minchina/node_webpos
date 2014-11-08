@@ -269,7 +269,6 @@ module.exports=function(app){
 
     app.get('/gooddetail',function(req,res){
         var goodId = req.query.goodId;
-        console.log("======================="+goodId);
         Good.get_good(goodId,function(err,good){
             if(err){
                 return console.log(err);

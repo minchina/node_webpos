@@ -191,15 +191,9 @@ module.exports=function(app){
     });
 
     app.get('/delAttr1',function(req,res){
-        Attr.get_attr(function(err,attr){
-           if(err){
-               return console.log(err);
-           }
             res.render('adminpage/deleAttrFromAdd',{title:"pos机后台管理系统",
-                attrs:attr
+                attrs:req.session.all_property
             })
-
-        });
     });
 
     app.get('/delAttr2',function(req,res){
@@ -220,14 +214,12 @@ module.exports=function(app){
 
     app.post('/delAttr1',function(req,res){
         var attrName = req.body.attr_name;
-        Attr.delete_attr(attrName,function(err,attr){
-            if(err){
-                return console.log(err);
-            }
-            res.redirect('/addgood');
-            req.flash('success',"成功删除属性");
-
-        })
+        var all_property = req.session.all_property;
+        var sub =_.indexOf(all_property,_.findWhere(all_property,{name:attrName}));
+        all_property.splice(sub,1);
+        req.session.property = all_property;
+        res.redirect('/addgood');
+        req.flash('success',"成功删除属性");
     });
 
     app.post('/delAttr2',function(req,res){

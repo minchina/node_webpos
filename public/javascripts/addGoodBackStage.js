@@ -1,16 +1,3 @@
-function save_check(){
-
-    var flag = true;
-    $(".form_add input").each(function(){
-        if($(this).val()==""){
-            flag = false;
-        }
-    });
-    return flag;
-}
-
-
-
 function attr_check(){
     var flag = true;
     $(".form_attr input").each(function(){

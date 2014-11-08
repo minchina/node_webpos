@@ -111,17 +111,12 @@ module.exports=function(app){
     });
 
     app.get('/addgood',function(req,res){
-
-        Attr.get_attr(function(err,attr){
-            if(err){
-                return console.log(err);
-            }
-            res.render('adminpage/addgood', {
-                title: "pos机后台管理系统",
-                success: req.flash('success').toString(),
-                error: req.flash('error').toString(),
-                attrs:attr
-            });
+        var attr = req.session.all_property;
+        res.render('adminpage/addgood', {
+            title: "pos机后台管理系统",
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString(),
+            attrs:attr
         });
     });
 

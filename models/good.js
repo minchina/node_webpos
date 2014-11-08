@@ -12,7 +12,6 @@ function Good(name,count,price,unit,barcode,type){
     this.unit = unit;
     this.price = price || 0;
     this.count = count || 0;
-    this.extre_attr = null;
     this.date = Date.now();
 }
 

@@ -293,38 +293,20 @@ module.exports=function(app){
 
     app.post('/gooddetail',function(req,res){
         var goodId = req.query.goodId;
-        var goodName = req.body.good_name;
-        var goodCount = req.body.good_count;
-        var goodUnit = req.body.good_unit;
-        var goodPrice =req.body.good_price;
-        console.log(goodId);
-
+        var goodObject = req.body;
+        console.log(goodId,goodObject);
         Good.get_good(goodId,function(err,good){
             if(err){
                 return console.log(err);
             }
-            //说明商品存在
             if(good){
-                var tmpproperty = good[0].extre_attr;
-                Attr.get_attr(function(err,propertys){
-                    _.each(propertys,function(property){
-                        tmpproperty.push({name:property.name,value:property.value});
-                    });
-                    Good.update_property(goodId,goodName,goodCount,goodUnit,goodPrice,tmpproperty,function(err){
-                        if(err){
-                            return console.log(err);
-                        }
-                        Attr.delete_all_attr(function(err){
-                            if(err){
-                                return console.log(err);
-                            }
-                            req.flash("success","更新成功");
-                            res.redirect('./?goodId='+goodId);
-                        });
-                    });
+                Good.update_property(goodId,goodObject,function(err){
+                    if(err){
+                        return console.log(err);
+                    }
+                    req.flash("success","更新成功");
+                    res.redirect('./?goodId='+goodId);
                 });
-
-
             }
         });
     });

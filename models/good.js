@@ -5,14 +5,13 @@ var _ = require('underscore');
 //other method
 var ObjectId = require('mongodb').ObjectID;
 
-function Good(name,count,price,unit,barcode,type,savecount){
+function Good(name,count,price,unit,barcode,type){
     this.barcode =barcode || null;
     this.name = name ;
     this.type = type || null;
     this.unit = unit;
     this.price = price || 0;
     this.count = count || 0;
-//    this.savecount = savecount || 0;
     this.extre_attr = null;
     this.date = Date.now();
 }
@@ -42,8 +41,7 @@ Good.prototype.save=function(callback){
     });
 
 };
-
-Good.update_property = function(good_id,good_name,good_count,good_unit,good_price,good_attr,callback){
+Good.update_property = function(good_id,goodobject,callback){
     mongodb.open(function(err,db){
         if(err){
             return callback(err);
@@ -53,9 +51,7 @@ Good.update_property = function(good_id,good_name,good_count,good_unit,good_pric
                 mongodb.close();
                 return callback(err);
             }
-            collection.update({_id:new ObjectId(good_id)},{$set:{name:good_name,
-            count:good_count,uint:good_unit,price:good_price,extre_attr:good_attr
-            }},function(err){
+            collection.update({_id:new ObjectId(good_id)},goodobject,function(err){
                 if(err){
                     mongodb.close();
                     return callback(err);

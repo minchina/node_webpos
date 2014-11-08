@@ -1,14 +1,3 @@
-function attr_check(){
-    var flag = true;
-    $(".form_attr input").each(function(){
-        if($(this).val()==""){
-            flag = false;
-        }
-    });
-    return flag;
-}
-
-
 $('.item-count').change(function(){
     var goodNum = parseInt($(this).val());
     var goodId = $(this).closest('.good_body').find('.good_id').text();

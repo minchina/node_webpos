@@ -181,26 +181,12 @@ module.exports=function(app){
         //这里需要新建立一个attr对象，用来显示新增加的属性
         var name = req.body.name;
         var value = req.body.value;
-        Attr.get(name,function(err,attr){
-            if(err){
-                req.flash('error',"添加失败");
-                return res.redirect('/addgood');
-            }
-            if(attr){
-                req.flash('error',"属性已经存在");
-                return res.redirect('/addgood');
-            }
-            var newattr = new Attr({name:name,value:value});
-            newattr.save(function(err,attr){
-                if(err){
-                    req.flash('error',"添加失败");
-                    return res.redirect('/addgood');
-                }
-                req.flash('success',"添加成功");
-                res.redirect('/addgood');
-            })
-
-        });
+        var all_property = req.session.all_property || [];
+        var newattr = new Attr({name:name,value:value});
+        all_property.push(newattr);
+        req.session.all_property = all_property;
+        req.flash('success',"添加成功");
+        res.redirect('/addgood');
 
     });
 

@@ -121,36 +121,17 @@ module.exports=function(app){
     });
 
     app.post('/addgood',function(req,res){
-        var goodName = req.body.good_name;
-        var goodCount = req.body.good_count;
-        var goodUnit = req.body.good_unit;
-        var goodPrice =req.body.good_price;
-        if (!_.where(req.session.item,{name:goodName})){
-            return false;
-        }
-        Attr.get_attr(function(err,attr){
+        var good_object = req.body;
+        console.log(good_object);
+        Good.save(good_object,function(err,good){
            if(err){
-               return console.log(err);
+               req.flash('error',"添加失败！");
+               return res.redirect("/addgood");
            }
-            var newGood = new Good(goodName,goodCount,goodPrice,goodUnit);
-            newGood.extre_attr = attr;
-            newGood.save(function(err,user){
-                if(err){
-                    req.flash('error',"添加失败！");
-                    return res.redirect("/addgood");
-                }
-                Attr.delete_all_attr(function(err,data){
-                    if(err){
-                        return console.log(err);
-                    }
-                    req.flash('success','添加成功！');
-                    res.redirect('/addgood')
-
-                });
-
-            })
+            req.session.all_property=[];
+            req.flash('success','添加成功！');
+            res.redirect('/addgood')
         });
-
     });
 
     app.post('/deleted',function(req,res){
@@ -241,6 +222,7 @@ module.exports=function(app){
     });
 
     app.get('/gooddetail',function(req,res){
+        console.log(req.session.all_property);
         var goodId = req.query.goodId;
         Good.get_good(goodId,function(err,good){
             if(err){
@@ -290,6 +272,7 @@ module.exports=function(app){
     });
 
     app.get('/addPropertyInDet',function(req,res){
+        console.log(req.session.all_property);
         var goodId = req.query.goodId;
         var goodName = req.session.good_name;
         res.render('adminpage/addPropertyInDet',{
@@ -306,15 +289,12 @@ module.exports=function(app){
         var propertyName = req.body.name;
         var propertyValue = req.body.value;
         var newProperty = new Attr({name:propertyName,value:propertyValue});
-        newProperty.save(function(err){
-           if(err){
-               return callback(err);
-           }
-           req.flash('success',"添加成功");
-            var url = '/gooddetail'+'?goodId='+goodId;
-           res.redirect(url);
-
-        });
+        var all_property = req.session.all_property || [];
+        all_property.push(newProperty);
+        req.session.all_property = all_property;
+        req.flash('success',"添加成功");
+        var url = '/gooddetail'+'?goodId='+goodId;
+        res.redirect(url);
     });
 
     app.get('/addpromotion',function(req,res){

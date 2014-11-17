@@ -3,11 +3,17 @@ function RulerFilter(){
 
 RulerFilter.filter=function(goods_items,rule){
     rule = RulerFilter.remove_no_use_symbal(rule);
-    return RulerFilter.filter_process(goods_items,rule,[],[]);
+    var parse_result = RulerFilter.parse(rule,[]);
+    rule = parse_result.rule;
+    var list_stack = parse_result.list;
+    console.info(rule,list_stack);
+    return RulerFilter.filter_process(goods_items,rule,[],[],list_stack || []);
 
 };
 
-RulerFilter.filter_process=function(good_items,rule,symbol_stack,result_stack){
+RulerFilter.filter_process=function(good_items,rule,symbol_stack,result_stack,list_stack){
+    RulerFilter.get_parse(rule,list_stack);
+    console.log(list_stack);
     //规则中包含有|或者&
     if(rule.indexOf("|") !=-1 || rule.indexOf("&")!=-1){
         //并且不是以|&开头
@@ -17,7 +23,7 @@ RulerFilter.filter_process=function(good_items,rule,symbol_stack,result_stack){
             var map = RulerFilter.get_value_map(unit);
             result_stack.push(RulerFilter.get_good_by_unit_rule(good_items,map));
             rule = rule.slice(index.index);
-            return RulerFilter.filter_process(good_items,rule,symbol_stack,result_stack);
+            return RulerFilter.filter_process(good_items,rule,symbol_stack,result_stack,list_stack);
             //以|&开头，肯定不是第一次进入该函数
         }else if(rule.match(/[|&]/).index ==0){
             //将该符号压入结果栈
@@ -37,7 +43,7 @@ RulerFilter.filter_process=function(good_items,rule,symbol_stack,result_stack){
             rule = rule.slice(1);
             //弹出符号之后，还需要将新的符号压入
             symbol_stack.push(symbol);
-            return RulerFilter.filter_process(good_items,rule,symbol_stack,result_stack);
+            return RulerFilter.filter_process(good_items,rule,symbol_stack,result_stack,list_stack);
         }
     }
     //当规则中不包含|&的时候,可以理解为只剩下一个rule unit了
@@ -83,6 +89,12 @@ RulerFilter.parse=function(s,list){
         }
     }
     return {rule:s,list:list};
+};
+
+RulerFilter.get_parse = function(s,list_stack){
+    s = parseInt(s.slice(1));
+    return list_stack[s];
+
 };
 
 RulerFilter.remove_no_use_symbal = function(rule){

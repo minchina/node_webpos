@@ -187,39 +187,41 @@ Good.get_good = function(goodId,callback){
     })
 };
 
-Good.get_by_condition = function(namearray,dayarray,callback){
-    console.log(namearray,dayarray);
-    var selectname = {};
-    selectname.$or = [];
-//    _.each(namearray,function())
-    console.log(selectname);
-//    mongodb.open(function(err,db){
-//        if(err){
-//            return callback(err);
-//        }
-//        db.collection('goods',function(err,collection){
-//            if(err){
-//                mongodb.close();
-//                return callback(err);
-//            }
-////            var query = { $and: [ { name: namearray[0] }, { date: { $lte: dayarray[0] } } ] };
-//            var query = {$or:[{name:namearray[0]},{name:namearray[1]},{name:"123"}]};
-////            if(goodId){
-////                query._id = ObjectId(goodId);
-////            }
-//            collection.find(query,{_id:1}).sort({
-//                _id:1
-//            }).toArray(function(err,goods){
-//                mongodb.close();
-//                if(err){
-//                    return callback(err);
-//                }
-//                callback(null,goods);
-//            });
-//        })
-//    })
-
+Good.bulkQuery = function(queryObject, callback){
+    var idArray = [];
+    for(var i=0;i<queryObject.length;i++){
+        idArray.push({_id:ObjectId(queryObject[i])})
+    }
+    mongodb.open(function(err,db){
+        if(err){
+            return callback(err);
+        }
+        db.collection('goods',function(err,collection){
+            if(err){
+                mongodb.close();
+                return callback(err);
+            }
+            var query = {"$or":idArray};
+            if(idArray.length == 0){
+                query = {};
+            }
+            collection.find(query).sort({
+                _id:1
+            }).toArray(function(err,goods){
+                mongodb.close();
+                if(err){
+                    return callback(err);
+                }
+                if(idArray.length == 0){
+                    goods = [];
+                }
+                callback(null,goods);
+            });
+        })
+    })
 };
+
+
 
 Good.deleted_Attr_by_id = function(good_id,attr_name,callback){
     //打开数据库

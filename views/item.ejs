@@ -18,14 +18,14 @@
                 </thead>
                 <tbody class="item-body">
                 <% goods.forEach(function(shop,index){ %>
-                <tr>
-                    <td class="hidden"><%=shop._id%></td>
+                <tr class="tr-body">
+                    <td class="hidden item_id"><%=shop._id%></td>
                     <td><%= shop.type || "无"%></td>
                     <td><%= shop.name || "无"%></td>
                     <td><%= shop.price || "无"%></td>
                     <td><%= shop.unit || "无"%></td>
                     <td class="hidden item-barcode"><%= shop.barcode %></td>
-                    <td><a class="btn btn-primary addCart" type="button" href="#" onclick="addtocart('<%= shop._id%>')">加入购物车</a></td>
+                    <td><a class="btn btn-primary addCart" type="button" href="#">加入购物车</a></td>
                 </tr>
                 <% })%>
                 </tbody>
